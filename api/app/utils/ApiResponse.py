@@ -42,11 +42,11 @@ class ApiResponse():
         Formatting response to a unique format while
         still benefiting of the Swagger marshaling.
 
-        Mainly switching from Flask's "errors" key to
-        this repo response format "error" & "message".
+        Switching from the Flask "errors" key to
+        response format with "error" & "message".
         
         Adding an empty "details" object if no details
-        are returned to remain consistent.
+        are returned, to remain consistent.
         """
         try:
             response_data = json.loads(response.get_data())
@@ -59,7 +59,8 @@ class ApiResponse():
                 response_data["details"] = {}
             response.set_data(json.dumps(response_data))
         except ValueError:
-            # Value is not JSON, probably HTML
+            # Response is not JSON, probably HTML
+            # Swagger UI returns HTML for example
             pass
         return response
 
