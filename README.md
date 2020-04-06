@@ -79,4 +79,4 @@ Nonetheless, the API always follows this response scheme :
 
 LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
 
-With this boilerplate, you will be able to develop corporate-ready service AND avoid yourself the trouble of developing registration / password forgotten / change password code.
+With LDAP and this boilerplate, you will be able to develop corporate-ready service AND avoid yourself the trouble of developing registration / password forgotten / change password / profile update code.
