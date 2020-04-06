@@ -1,11 +1,11 @@
 # ReactJS / Flask / LDAP-auth boilerplate
 
-<div style="text-align:center">
+<p align="center">
     <a href="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-docker-boilerplate.svg?branch=master" target="_blank">
         <img src="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-docker-boilerplate.svg?branch=master"/>
     </a>
-    <p>ReactJS + Flask + Docker boilerplate using an LDAP and token-based authentication.</p>
-</div>
+</p>
+<p align="center">ReactJS + Flask + Docker boilerplate using an LDAP and token-based authentication</p>
 
 API includes :
 
