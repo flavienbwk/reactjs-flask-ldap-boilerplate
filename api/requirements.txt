@@ -1,0 +1,9 @@
+psycopg2-binary==2.8.4
+Werkzeug==0.16.1
+flask-restplus==0.13.0
+Flask-SQLAlchemy==2.4.1
+Flask-Migrate==2.5.3
+Flask-Script==2.0.6
+python-ldap==3.2.0
+hashids==1.2.0
+python-slugify==4.0.0

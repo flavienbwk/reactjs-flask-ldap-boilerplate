@@ -1,0 +1,7 @@
+.vscode/
+
+web/app/node_modules/
+ldap-data/
+logs/
+
+api/database.mwb.bak

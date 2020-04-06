@@ -1,0 +1,78 @@
+version: "3"
+
+services:
+
+  # LDAP-related
+
+  ldap:
+    image: osixia/openldap:1.3.0
+    restart: always
+    ports:
+        - 389:389
+        - 636:636
+    environment: 
+        LDAP_ORGANISATION: "My Company"
+        LDAP_DOMAIN: "mycompany.com"
+        LDAP_ADMIN_PASSWORD: "adminpwd"
+    volumes:
+        - './ldap-data:/var/lib/ldap'
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.9.0
+    restart: always
+    ports:
+        - 8081:443
+    environment: 
+        PHPLDAPADMIN_LDAP_HOSTS: ldap
+    depends_on: 
+      - ldap
+
+  # Database-related
+
+  database:
+    image: postgres:12.2-alpine
+    restart: always
+    environment: 
+      POSTGRES_USER: "myproject"
+      POSTGRES_PASSWORD: "myprojectpwd"
+      POSTGRES_DB: "myproject"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    depends_on: 
+      - database
+
+  # Service-related
+
+  api:
+    build: ./api
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./api/app:/app
+      - ./logs:/logs
+    environment: 
+      FLASK_SERVER_NAME: "My API Project"
+      FLASK_SERVER_DESCRIPTION: "Dockerized Flask API boilerplate using an LDAP and token-based authentication"
+      FLASK_SECRET_KEY: "Some secret key"
+      FLASK_LEVEL: "dev" # dev, test or prod
+      LOG_LEVEL: "DEBUG" # DEBUG, INFO, WARNING or ERROR
+
+      LDAP_HOST: "ldap"
+      LDAP_PORT: 389 # Secure LDAP (LDAPS) are not supported yet
+      LDAP_USERS_DN: "dc=mycompany,dc=com"
+      LDAP_ADMIN_DN: "cn=admin,dc=mycompany,dc=com"
+      LDAP_ADMIN_PASSWORD: "adminpwd"
+
+      POSTGRES_HOST: "database"
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: "myproject"
+      POSTGRES_PASSWORD: "myprojectpwd"
+      POSTGRES_DB: "myproject"
+    depends_on:
+      - ldap
+      - database

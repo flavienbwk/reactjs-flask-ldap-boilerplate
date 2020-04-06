@@ -1,0 +1,7 @@
+__pycache__/
+
+medias/*
+!medias/.gitkeep
+
+certs/*
+!certs/.gitkeep
