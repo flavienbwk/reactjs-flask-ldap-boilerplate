@@ -65,7 +65,7 @@ docker-compose up api
 
 Access the API and its documentation browsing [`http://localhost:5000`](http://localhost:5000)
 
-Nonetheless, the API always follows this response schema :
+Nonetheless, the API always follows this response scheme :
 
 ```
 {
