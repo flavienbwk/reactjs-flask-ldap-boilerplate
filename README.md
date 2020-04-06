@@ -7,11 +7,11 @@ API includes :
 - Docker architecture
 - LDAP authentication
 - Token-based API authentication
-- Automatic [token renewal](./api/service/auth_service.py#L44) with [a Flask middleware](./api/service/auth_service.py#L31)
+- Automatic [token renewal](./api/app/service/auth_service.py#L44) with [a Flask middleware](./api/app/service/auth_service.py#L31)
 - Swagger documentation
 - Flask-Migrate
 - Flask-SQLAlchemy (PostgreSQL was chosen)
-- [Logging and logs rotation](./api/utils/Logger.py#L12)
+- [Logging and logs rotation](./api/app/utils/Logger.py#L12)
 
 > :information_source: The ReactJS part is under development
 
@@ -46,7 +46,7 @@ If you are not familiar with LDAP, [read my LDAP user creation guide](./CREATE_L
 
 ### Run the API
 
-The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/model) will be automatically applied to the database when the API is **restarted**.
+The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied to the database when the API is **restarted**.
 
 ```
 docker-compose up api
