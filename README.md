@@ -49,7 +49,7 @@ docker-compose up ldap phpldapadmin database adminer -d
 > **adminer** (PostgreSQL management) will be available through `http://localhost:8082`  
 > **phpLDAPAdmin** (LDAP management) will be available through `https://localhost:8081`
 
-### Creating first user in the LDAP
+### Creating the first user in the LDAP
 
 Access phpLDAPAdmin with : `https://localhost:8081`
 
@@ -75,7 +75,7 @@ Nonetheless, the API always follows this response scheme :
 }
 ```
 
-## Why LDAP authentication ?
+## Why using LDAP authentication ?
 
 LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
 
