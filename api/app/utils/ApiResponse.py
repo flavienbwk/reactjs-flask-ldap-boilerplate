@@ -48,14 +48,19 @@ class ApiResponse():
         Adding an empty "details" object if no details
         are returned to remain consistent.
         """
-        response_data = json.loads(response.get_data())
-        if "errors" in response_data:
-            response_data["message"] = ApiResponse.stringifyFlaskErrors(response_data["errors"])
-            response_data["error"] = True
-            del(response_data["errors"])
-        if "details" not in response_data:
-            response_data["details"] = {}
-        response.set_data(json.dumps(response_data))
+        try:
+            response_data = json.loads(response.get_data())
+            response.headers.add('Content-Type', 'application/json')
+            if "errors" in response_data:
+                response_data["message"] = ApiResponse.stringifyFlaskErrors(response_data["errors"])
+                response_data["error"] = True
+                del(response_data["errors"])
+            if "details" not in response_data:
+                response_data["details"] = {}
+            response.set_data(json.dumps(response_data))
+        except ValueError:
+            # Value is not JSON, probably HTML
+            pass
         return response
 
     @staticmethod

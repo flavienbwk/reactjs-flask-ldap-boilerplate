@@ -30,7 +30,6 @@ def run():
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Content-Type', 'application/json')
     return ApiResponse.formatFlaskResponse(response)
 
 if __name__ == '__main__':
