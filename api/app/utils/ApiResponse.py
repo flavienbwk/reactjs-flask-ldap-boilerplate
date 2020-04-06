@@ -1,3 +1,4 @@
+import json
 from typing import Dict, Union
 
 class ApiResponse():
@@ -7,20 +8,20 @@ class ApiResponse():
     """
 
     def __init__(self) -> None:
-        self.errors = True
+        self.error = True
         self.message = ""
         self.details = {}
 
     def setAll(self, error: bool, message: str, details: dict) -> None:
-        self.errors = error
+        self.error = error
         self.message = message
         self.details = details
 
     def setSuccess(self) -> None:
-        self.errors = False
+        self.error = False
 
     def setError(self) -> None:
-        self.errors = True
+        self.error = True
     
     def setMessage(self, message: str) -> None:
         self.message = message
@@ -28,16 +29,48 @@ class ApiResponse():
     def setDetails(self, details: dict) -> None:
         self.details = details
 
-    def getResponse(self) -> {"errors": bool, "message": str, "details": {}}:
+    def getResponse(self) -> {"error": bool, "message": str, "details": {}}:
         return {
-            "errors": self.errors,
+            "error": self.error,
             "message": self.message,
             "details": self.details
         }
 
-    def __repr__(self):
-        return "<ApiResponse(errors='{}', message='{}', details={})>".format(
-            self.errors,
+    @staticmethod
+    def formatFlaskResponse(response):
+        """
+        Formatting response to a unique format while
+        still benefiting of the Swagger marshaling.
+
+        Mainly switching from Flask's "errors" key to
+        this repo response format "error" & "message".
+        
+        Adding an empty "details" object if no details
+        are returned to remain consistent.
+        """
+        response_data = json.loads(response.get_data())
+        if "errors" in response_data:
+            response_data["message"] = ApiResponse.stringifyFlaskErrors(response_data["errors"])
+            response_data["error"] = True
+            del(response_data["errors"])
+        if "details" not in response_data:
+            response_data["details"] = {}
+        response.set_data(json.dumps(response_data))
+        return response
+
+    @staticmethod
+    def stringifyFlaskErrors(obj: object) -> str:
+        """
+        Turns the list of errors into a string.
+        """
+        final_message = ""
+        for i, message in enumerate(obj.values()):
+            final_message += message if i == 0 else ". " + message
+        return final_message
+
+    def __repr__(self) -> str:
+        return "<ApiResponse(error='{}', message='{}', details={})>".format(
+            self.error,
             self.message,
             len(self.details)
         )

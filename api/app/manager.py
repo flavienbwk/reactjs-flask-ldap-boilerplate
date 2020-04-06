@@ -1,10 +1,13 @@
 import os
+import json
 
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
 from routes import blueprint
 from app import create_app, database
+
+from utils.ApiResponse import ApiResponse
 
 # Initialization
 
@@ -27,7 +30,8 @@ def run():
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
-    return response
+    response.headers.add('Content-Type', 'application/json')
+    return ApiResponse.formatFlaskResponse(response)
 
 if __name__ == '__main__':
     manager.run()

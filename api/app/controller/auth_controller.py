@@ -27,7 +27,7 @@ auth_login_ldap_dto = api.model('auth_login_ldap', {
 })
 
 auth_login_ldap_response_dto = api.model('auth_login_ldap_response', {
-    'errors': fields.Boolean(description="True on error, false on success"),
+    'error': fields.Boolean(description="True on error, false on success"),
     'message': fields.String(description="Some error or success message"),
     'details': fields.Nested(
         api.model('auth_login_ldap_response_details', {

@@ -40,12 +40,12 @@ def requires_authentication(f):
         if "X-Api-Auth-Token" in request.headers:
             token_value = escape(request.headers["X-Api-Auth-Token"])
             response = AuthService.checkToken(token_value)
-            if response.errors is False:
+            if response.error is False:
                 response = AuthService.renewToken(token_value)
         else:
             response.setMessage("Missing token in header of the query : X-Api-Auth-Token")
 
-        if response.errors is True:
+        if response.error is True:
             return response.getResponse()
         else:
             return f(*args, **kwargs)

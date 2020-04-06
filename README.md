@@ -63,10 +63,9 @@ Notheless, the API always follows this response schema :
 
 ```
 {
-    "errors": boolean,
+    "error": boolean,
     "message": string,
     "details": object
 }
 ```
 
-> :warning: Keys `errors` and `details` may be missing in some cases. Please check for it in your front-end.
