@@ -31,12 +31,9 @@ auth_login_ldap_response_dto = api.model('auth_login_ldap_response', {
     'message': fields.String(description="Some error or success message"),
     'details': fields.Nested(
         api.model('auth_login_ldap_response_details', {
-            'token': fields.String(),
-            'expires_at': fields.Integer(
-                description="As unix timestamp in seconds", 
-                default=int(time.time())
-            )
-        })
+            'token': fields.String,
+            'expires_at': fields.Integer(description="As unix timestamp in seconds")
+        }), skip_none=True
     )
 })
 
@@ -56,7 +53,7 @@ auth_header_token_dto.add_argument(
 )
 class AuthLDAPLogin(Resource):
 
-    @api.marshal_with(auth_login_ldap_response_dto)
+    @api.marshal_with(auth_login_ldap_response_dto, skip_none=True)
     @api.expect(auth_login_ldap_dto, validate=True)
     def post(self):
         return AuthService.authLDAPUser(
@@ -71,6 +68,7 @@ class AuthLDAPLogin(Resource):
 )
 class AuthCheck(Resource):
 
+    @api.marshal_with(auth_login_ldap_response_dto, skip_none=True)
     @api.expect(auth_header_token_dto, validate=True)
     @requires_authentication
     def post(self):
