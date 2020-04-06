@@ -62,8 +62,8 @@ class AuthService():
             user = User.query.filter_by(username=username).first()
 
             if user is None:
-                # Create user account in database if not
-                # yet created from its LDAP details
+                # Create user account from its LDAP details
+                # in database if not yet created
                 sql_datetime = datetime.datetime.utcnow()
                 last_id = (UserService.getLastUserID() + 1)
                 UserService.createUser({
