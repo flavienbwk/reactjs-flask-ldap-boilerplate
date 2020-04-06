@@ -24,6 +24,12 @@ API includes :
 
 I chose to use Swagger to document the API. Just run the API following the steps below and browse to [`http://localhost:5000`](http://localhost:5000)
 
+Here you can take a look at the database architecture scheme :
+
+<p align="center">
+    <img src="./api/database.png"/>
+</p>
+
 ## Setting up the API
 
 The API is made to run with an LDAP server for managing users. Whether use the provided Docker LDAP server or remove the conf. in [`docker-compose.yml`](./docker-compose.yml) and use your own LDAP server.
