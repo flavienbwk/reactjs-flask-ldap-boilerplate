@@ -85,6 +85,8 @@ Just run :
 docker-compose up app # Build is quick, **first** launch is long (expect at least 5 min.)
 ```
 
+You can now enjoy the app on `https://localhost:8080`
+
 ## Why using LDAP authentication ?
 
 LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
