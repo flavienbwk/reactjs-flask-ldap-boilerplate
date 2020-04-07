@@ -1,8 +1,8 @@
-# ReactJS / Flask / LDAP-auth boilerplate
+# Dockerized ReactJS, Flask, LDAP-auth boilerplate
 
 <p align="center">
-    <a href="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-docker-boilerplate.svg?branch=master" target="_blank">
-        <img src="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-docker-boilerplate.svg?branch=master"/>
+    <a href="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-boilerplate.svg?branch=master" target="_blank">
+        <img src="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-boilerplate.svg?branch=master"/>
     </a>
 </p>
 <p align="center">ReactJS + Flask + Docker<br/>boilerplate using a token-based LDAP authentication</p>
@@ -18,7 +18,7 @@ API includes :
 - Flask-SQLAlchemy (PostgreSQL was chosen)
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
 
-> :information_source: The ReactJS part is under development. [See TODOs](#left-todo).
+> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todo).
 
 ## API documentation
 
@@ -42,7 +42,7 @@ First, please change the database/LDAP passwords and keys in `docker-compose.yml
 
 Then, run :
 
-```
+```bash
 docker-compose up ldap phpldapadmin database adminer -d
 ```
 
@@ -59,7 +59,7 @@ If you are not familiar with LDAP, [read my LDAP user creation guide](./CREATE_L
 
 The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied to the database when the API is **restarted**.
 
-```
+```bash
 docker-compose up api
 ```
 
@@ -67,12 +67,22 @@ Access the API and its documentation browsing [`http://localhost:5000`](http://l
 
 Nonetheless, the API always follows this response scheme :
 
-```
+```json
 {
     "error": boolean,
     "message": string,
     "details": object
 }
+```
+
+## Setting up the web application
+
+:warning: :clock9: This step may take quite a lot of time due to npm's modules download
+
+Just run :
+
+```bash
+docker-compose up app # Build is quick, **first** launch is long (expect at least 5 min.)
 ```
 
 ## Why using LDAP authentication ?
@@ -81,12 +91,25 @@ LDAP services are used in a lot of companies and institutions around the world t
 
 With this boilerplate, you will be able to develop corporate-ready services AND avoid yourself the troubles of developing registration / password forgotten / change password / profile update code.
 
-## Left TODO
+## Left TODOs
 
-- Create the front-end part
+API :
+
+- Add LDAPS (secure LDAP) support
+- Create "profile information" route
+- Create "logout" route
+- Synchronise user LDAP profile in API database once logged in
+
+App :
+
+- Create the dashboard page with auto-redirection when logged in/out
+- Get profile details from API
+
+Architecture :
+
 - Create a `prod.docker-compose.yml` file that :
   - Uses NGINX with SSL
   - Builds & serves the front-end
   - Disables Swagger UI for the API
+- Add "Deploy to prod" guide in README
 - Improve Docker networks security between containers
-- Add LDAPS (secure LDAP) support
