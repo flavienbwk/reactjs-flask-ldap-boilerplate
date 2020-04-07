@@ -93,12 +93,23 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 ## Left TODOs
 
-- Create the front-end part
+API :
+
+- Add LDAPS (secure LDAP) support
+- Create "profile information" route
+- Create "logout" route
+- Synchronise user LDAP profile in API database once logged in
+
+App :
+
+- Create the dashboard page with auto-redirection when logged in/out
+- Get profile details from API
+
+Architecture :
+
 - Create a `prod.docker-compose.yml` file that :
   - Uses NGINX with SSL
   - Builds & serves the front-end
   - Disables Swagger UI for the API
 - Add "Deploy to prod" guide in README
-- Synchronise user LDAP profile in API database once logged in 
 - Improve Docker networks security between containers
-- Add LDAPS (secure LDAP) support
