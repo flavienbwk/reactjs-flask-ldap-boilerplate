@@ -10,7 +10,8 @@ blueprint = Blueprint('api', __name__)
 api = Api(
     blueprint, 
     title=os.environ.get("FLASK_SERVER_NAME"), 
-    description=os.environ.get("FLASK_SERVER_DESCRIPTION")
+    description=os.environ.get("FLASK_SERVER_DESCRIPTION"),
+    version='1.0'
 )
 
 # Routes

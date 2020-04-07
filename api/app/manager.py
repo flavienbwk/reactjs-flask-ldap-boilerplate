@@ -29,6 +29,7 @@ def run():
 
 @app.after_request
 def after_request(response):
+    response.direct_passthrough = False
     response.headers.add('Access-Control-Allow-Origin', '*')
     return ApiResponse.formatFlaskResponse(response)
 

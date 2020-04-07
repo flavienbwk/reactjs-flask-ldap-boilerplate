@@ -5,7 +5,7 @@
         <img src="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-docker-boilerplate.svg?branch=master"/>
     </a>
 </p>
-<p align="center">ReactJS + Flask + Docker boilerplate using an LDAP and token-based authentication</p>
+<p align="center">ReactJS + Flask + Docker<br/>boilerplate using a token-based LDAP authentication</p>
 
 API includes :
 
@@ -18,7 +18,7 @@ API includes :
 - Flask-SQLAlchemy (PostgreSQL was chosen)
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
 
-> :information_source: The ReactJS part is under development
+> :information_source: The ReactJS part is under development. [See TODOs](#left-todo).
 
 ## API documentation
 
@@ -79,4 +79,14 @@ Nonetheless, the API always follows this response scheme :
 
 LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
 
-With LDAP and this boilerplate, you will be able to develop corporate-ready service AND avoid yourself the trouble of developing registration / password forgotten / change password / profile update code.
+With this boilerplate, you will be able to develop corporate-ready services AND avoid yourself the troubles of developing registration / password forgotten / change password / profile update code.
+
+## Left TODO
+
+- Create the front-end part
+- Create a `prod.docker-compose.yml` file that :
+  - Uses NGINX with SSL
+  - Builds & serves the front-end
+  - Disables Swagger UI for the API
+- Improve Docker networks security between containers
+- Add LDAPS (secure LDAP) support
