@@ -75,6 +75,16 @@ Nonetheless, the API always follows this response scheme :
 }
 ```
 
+## Setting up the web application
+
+:warning: :clock9: This step may take quite a lot of time due to npm's modules download
+
+Just run :
+
+```bash
+docker-compose up app # Build is quick, **first** launch is long (expect at least 5 min.)
+```
+
 ## Why using LDAP authentication ?
 
 LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
