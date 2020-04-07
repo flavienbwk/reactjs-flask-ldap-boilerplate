@@ -1,4 +1,4 @@
-# ReactJS / Flask / LDAP-auth boilerplate
+# Dockerized ReactJS, Flask, LDAP-auth boilerplate
 
 <p align="center">
     <a href="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-docker-boilerplate.svg?branch=master" target="_blank">
@@ -42,7 +42,7 @@ First, please change the database/LDAP passwords and keys in `docker-compose.yml
 
 Then, run :
 
-```
+```bash
 docker-compose up ldap phpldapadmin database adminer -d
 ```
 
@@ -59,7 +59,7 @@ If you are not familiar with LDAP, [read my LDAP user creation guide](./CREATE_L
 
 The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied to the database when the API is **restarted**.
 
-```
+```bash
 docker-compose up api
 ```
 
@@ -67,7 +67,7 @@ Access the API and its documentation browsing [`http://localhost:5000`](http://l
 
 Nonetheless, the API always follows this response scheme :
 
-```
+```json
 {
     "error": boolean,
     "message": string,
@@ -81,12 +81,13 @@ LDAP services are used in a lot of companies and institutions around the world t
 
 With this boilerplate, you will be able to develop corporate-ready services AND avoid yourself the troubles of developing registration / password forgotten / change password / profile update code.
 
-## Left TODO
+## Left TODOs
 
 - Create the front-end part
 - Create a `prod.docker-compose.yml` file that :
   - Uses NGINX with SSL
   - Builds & serves the front-end
   - Disables Swagger UI for the API
+- Add "Deploy to prod" guide in README
 - Improve Docker networks security between containers
 - Add LDAPS (secure LDAP) support

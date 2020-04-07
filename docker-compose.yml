@@ -77,3 +77,14 @@ services:
     depends_on:
       - ldap
       - database
+
+  app:
+    build: ./app
+    restart: always
+    ports:
+      - "8080:3000"
+    volumes:
+      - ./app/app:/app
+    environment:
+      NODE_ENV: "development"
+      CHOKIDAR_USEPOLLING: "true"

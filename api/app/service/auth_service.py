@@ -78,6 +78,7 @@ class AuthService():
 
             if user is not None:
                 response = TokenService.generateUserToken(user.id)
+                response.message = response.message if (response.error) else "Authentication succeeded" 
             else:
                 logger.error("Impossible to find the profile of " + username)
                 response.setMessage("Impossible to find your profile")
