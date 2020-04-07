@@ -18,7 +18,7 @@ API includes :
 - Flask-SQLAlchemy (PostgreSQL was chosen)
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
 
-> :information_source: The ReactJS part is under development. [See TODOs](#left-todo).
+> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todo).
 
 ## API documentation
 
@@ -89,5 +89,6 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
   - Builds & serves the front-end
   - Disables Swagger UI for the API
 - Add "Deploy to prod" guide in README
+- Synchronise user LDAP profile in API database once logged in 
 - Improve Docker networks security between containers
 - Add LDAPS (secure LDAP) support
