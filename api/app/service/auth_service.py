@@ -141,3 +141,16 @@ class AuthService():
             ))
             return response
         return TokenService.renewToken(token.id)
+
+    @staticmethod
+    def removeToken(token_value: str):
+        response = ApiResponse()
+        token = Token.query.filter_by(token=token_value).order_by(Token.ut_created_at.desc()).first()
+        if token is None:
+            response.setMessage("Token was not found")
+            logger.error("Token was not found. Token: " + token_value)
+            return response
+        response = TokenService.removeToken(token.id)
+        if response.error is False:
+            response.setMessage("You've correctly been logged out.")
+        return response

@@ -81,6 +81,20 @@ class TokenService():
         return response
 
     @staticmethod
+    def removeToken(token_id: int):
+        """
+        Renews a token for the maximum expiration time.
+        """
+        response = ApiResponse()
+        Token.query.filter_by(id=token_id).delete()
+        if database.save_changes() is False:
+            response.setMessage("An error occured while removing the token from the database")
+        else:
+            response.setSuccess()
+            response.setMessage("Token successfuly removed")
+        return response
+
+    @staticmethod
     def clearUserTokens(user_id: int):
         data = Token.query.filter(Token.User_id == user_id).delete()
         database.save_changes(data)

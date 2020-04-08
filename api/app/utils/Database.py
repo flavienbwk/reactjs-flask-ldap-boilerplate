@@ -19,9 +19,10 @@ class Database():
     def initDatabase(self, app):
         self.database.init_app(app)
 
-    def save_changes(self, data):
+    def save_changes(self, data=False):
         try:
-            self.database.session.add(data)
+            if data is not False:
+                self.database.session.add(data)
             self.database.session.commit()
             return True
         except Exception as e:

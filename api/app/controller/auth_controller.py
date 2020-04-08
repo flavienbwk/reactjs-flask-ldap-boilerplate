@@ -75,3 +75,17 @@ class AuthCheck(Resource):
         return AuthService.checkToken(
                 escape(request.headers["X-Api-Auth-Token"])
             ).getResponse()
+
+
+@api.route(
+    '/logout',
+    doc={"description": "Logging out a user."}
+)
+class AuthLogout(Resource):
+
+    @api.expect(auth_header_token_dto, validate=True)
+    @requires_authentication
+    def post(self):
+        return AuthService.removeToken(
+                escape(request.headers["X-Api-Auth-Token"])
+            ).getResponse()
