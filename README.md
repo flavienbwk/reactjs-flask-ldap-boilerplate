@@ -32,6 +32,8 @@ Here you can take a look at the database architecture scheme :
     <img src="./api/database.png"/>
 </p>
 
+> Reminder : there is no `password` field because we use LDAP for authentication.
+
 ## Setting up the API
 
 The API is made to run with an LDAP server for managing users. Whether use the provided Docker LDAP server or remove the conf. in [`docker-compose.yml`](./docker-compose.yml) and use your own LDAP server.
@@ -88,7 +90,7 @@ Just run :
 docker-compose up app
 ```
 
-You can now enjoy the app on [`https://localhost:8080`](https://localhost:8080)
+You can now enjoy the app on [`http://localhost:8080`](http://localhost:8080)
 
 > :information_source: If you want to add a dependency, just stop & re-launch a `docker-compose up app`. You won't have to wait as for first launch.
 
@@ -111,6 +113,8 @@ App :
 
 - Create the dashboard page with auto-redirection when logged in/out
 - Get profile details from API
+- Add periodic check for token (each 30 seconds)
+- Add loader when logging in
 
 Architecture :
 
