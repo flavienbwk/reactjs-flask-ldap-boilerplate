@@ -30,7 +30,7 @@ export class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.auth = new Auth()
+        this.auth = new Auth(this.onAuthUpdate)
         this.state = {
             "username": "",
             "password": "",
@@ -39,6 +39,13 @@ export class Login extends Component {
             "authenticated": this.auth.isUserAuthenticated(),
             "profile": this.auth.getUserProfileCookie()
         }
+    }
+
+    onAuthUpdate = () => {
+        this.setState({
+            "authenticated": this.auth.isUserAuthenticated(),
+            "profile": this.auth.getUserProfileCookie()
+        })
     }
 
     onUsernameChange = (event) => this.setState({ "username": event.target.value })
@@ -74,9 +81,7 @@ export class Login extends Component {
             }
             this.setState({ 
                 "disable_form": disable_form,
-                "login_btn_text": "Login",
-                "authenticated": this.auth.isUserAuthenticated(),
-                "profile": this.auth.getUserProfileCookie()
+                "login_btn_text": "Login"
             })
         }
     }
@@ -133,10 +138,16 @@ export class Login extends Component {
                                         :
                                         <div>
                                             <h3 className="center">You are already authenticated !</h3>
-                                            <p className="center">{ this.state.profile.first_name }, do you want to :</p>
+                                            <p className="center">
+                                                { 
+                                                    this.state.profile !== undefined && "first_name" in this.state.profile 
+                                                    ? this.state.profile.first_name 
+                                                    : "Tell me" 
+                                                }, do you want to :
+                                            </p>
                                             <ul>
                                                 <li>Go to your dashboard ?</li>
-                                                <li>Logout ?</li>
+                                                <li><button onClick={this.auth.logoutUser}>Logout ?</button></li>
                                             </ul>
                                         </div>    
                                     }

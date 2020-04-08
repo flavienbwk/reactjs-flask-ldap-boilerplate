@@ -4,10 +4,11 @@ import { User } from './User'
 
 export class Auth {
 
-    constructor() {
+    constructor(onAuthUpdate = () => {}) {
         this.cookies = new Cookies()
         this.api_endpoint = "http://localhost:5000/api"
         this.authenticated = this.#checkUserToken()
+        this.onAuthUpdate = onAuthUpdate // Callbacked if any update has been done to the "authentication" token
     }
 
     /**
@@ -45,6 +46,7 @@ export class Auth {
                     "expires_at": api_auth_query.details.expires_at
                 })
                 await this.updateUserProfile()
+                this.onAuthUpdate()
             }
             Notifier.notifyFromResponse(api_auth_query, "Authentication")
         } else {
@@ -68,6 +70,7 @@ export class Auth {
                     "email": ("email" in user_profile_query.details) ? user_profile_query.details.email : "",
                     "updated_at": user_profile_query.details.updated_at,
                 })
+                this.onAuthUpdate()
             } else {
                 Notifier.notifyFromResponse(user_profile_query, "Profile details")
             }
@@ -78,6 +81,43 @@ export class Auth {
                 "Failed to retrieve your profile details"
             )
         }
+    }
+
+    /**
+     * Request an API call to delete token and destroys 
+     * the "authentication" and "profile" cookies.
+     */
+    logoutUser = async () => {
+        const user_cookie = this.cookies.get("authentication")
+        if (user_cookie) {
+            if ("token" in user_cookie) {
+                const logout_query = await this.#requestUserLogout(user_cookie["token"])
+                if ("error" in logout_query && logout_query.error) {
+                    Notifier.notifyFromResponse(logout_query, "Server logout")
+                }
+            }
+            this.cookies.remove("authentication")
+            this.cookies.remove("profile")
+            Notifier.createNotification(
+                "success",
+                "Client logout",
+                "Successfuly logged you out"
+            )
+            this.onAuthUpdate()
+        }
+    }
+
+    /**
+     * Returns the API response for LDAP authentication
+     */
+    #requestUserLogout = (token_value) => {
+        return fetch(this.api_endpoint + "/auth/logout", {
+            method: "POST",
+            headers: { 'X-Api-Auth-Token': token_value }
+        })
+        .then(res => res.json())
+        .then((data) => { return data })
+        .catch(console.error)
     }
 
     /**
@@ -107,6 +147,7 @@ export class Auth {
                 user_authenticated = true
             }
             this.cookies.set("authentication", auth_cookie)
+            this.onAuthUpdate()
         }
         return user_authenticated
     }
