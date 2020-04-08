@@ -54,10 +54,7 @@ export class Login extends Component {
             let disable_form = false
             const api_ping_query = await Ping.pingApi()
             if (api_ping_query) {
-                const api_auth_query = await this.auth.requestLDAPLogin(
-                    this.state.username,
-                    this.state.password
-                )
+                const api_auth_query = await this.auth.requestLDAPLogin(this.state.username, this.state.password)
                 if (api_auth_query && api_auth_query.error === false) {
                     this.auth.registerUserAuthentication(
                         this.state.username,
@@ -136,7 +133,7 @@ export class Login extends Component {
                                         :
                                         <div>
                                             <h3 className="center">You are already authenticated !</h3>
-                                            <p className="center">{ this.state.profile.username }, do you want to :</p>
+                                            <p className="center">{ this.state.profile.first_name }, do you want to :</p>
                                             <ul>
                                                 <li>Go to your dashboard ?</li>
                                                 <li>Logout ?</li>

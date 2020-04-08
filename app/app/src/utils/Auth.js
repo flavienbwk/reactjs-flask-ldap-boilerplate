@@ -1,5 +1,6 @@
 import { Cookies } from 'react-cookie'
 import { Notifier } from './Notifier'
+import { User } from './User'
 
 export class Auth {
 
@@ -34,8 +35,7 @@ export class Auth {
      * will register cookies including its connection
      * token and profile details.
      */
-    registerUserAuthentication = (username, api_auth_query) => {
-        let notify_default_response = false
+    registerUserAuthentication = async (username, api_auth_query) => {
         if (api_auth_query) {
             if ("error" in api_auth_query && api_auth_query.error === false) {
                 // Save auth token
@@ -44,22 +44,38 @@ export class Auth {
                     "token": api_auth_query.details.token,
                     "expires_at": api_auth_query.details.expires_at
                 })
-
-                // Save profile details
-                // @todo TODO(flavienbwk): call profile API route
-                this.cookies.set("profile", {
-                    "username": username
-                })
+                await this.updateUserProfile()
             }
-            notify_default_response = true
-        }
-        if (notify_default_response) {
             Notifier.notifyFromResponse(api_auth_query, "Authentication")
         } else {
             Notifier.createNotification(
                 "error",
                 "Authentication",
                 "Error while saving your session in your browser"
+            )
+        }
+    }
+
+    updateUserProfile = async () => {
+        const user_profile_query = await User.requestUserProfile()
+        if (user_profile_query) {
+            if ("error" in user_profile_query && user_profile_query.error === false) {
+                this.cookies.set("profile", {
+                    "ids": user_profile_query.details.ids,
+                    "username": user_profile_query.details.username,
+                    "first_name": user_profile_query.details.first_name,
+                    "last_name": user_profile_query.details.last_name,
+                    "email": ("email" in user_profile_query.details) ? user_profile_query.details.email : "",
+                    "updated_at": user_profile_query.details.updated_at,
+                })
+            } else {
+                Notifier.notifyFromResponse(user_profile_query, "Profile details")
+            }
+        } else {
+            Notifier.createNotification(
+                "error",
+                "Profile details",
+                "Failed to retrieve your profile details"
             )
         }
     }
