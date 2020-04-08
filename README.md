@@ -117,9 +117,9 @@ App :
 
 Architecture :
 
-- [P1] Add "Deploy to prod" guide in README
-- [P1] Create a `prod.docker-compose.yml` file that :
+- [P3] Add "Deploy to prod" guide in README
+- [P3] Create a `prod.docker-compose.yml` file that :
   - Uses NGINX with SSL
   - Builds & serves the front-end
   - Disables Swagger UI
-- [P2] Improve Docker networks security between containers
+- [P4] Improve Docker networks security between containers
