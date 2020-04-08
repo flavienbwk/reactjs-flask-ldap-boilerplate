@@ -9,7 +9,7 @@
 
 > :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
 
-> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todo).
+> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todos).
 
 ## Features
 
@@ -88,7 +88,7 @@ Just run :
 docker-compose up app
 ```
 
-You can now enjoy the app on `https://localhost:8080`
+You can now enjoy the app on [`https://localhost:8080`](https://localhost:8080)
 
 > :information_source: If you want to add a dependency, just stop & re-launch a `docker-compose up app`. You won't have to wait as for first launch.
 
