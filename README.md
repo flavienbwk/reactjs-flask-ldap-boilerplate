@@ -9,7 +9,7 @@
 
 > :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
 
-> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todo).
+> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todos).
 
 ## Features
 
