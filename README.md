@@ -7,7 +7,11 @@
 </p>
 <p align="center">ReactJS + Flask + Docker<br/>boilerplate using a token-based LDAP authentication</p>
 
-API includes :
+> :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
+
+> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todo).
+
+## Features
 
 - Docker architecture
 - LDAP authentication
@@ -17,8 +21,6 @@ API includes :
 - Flask-Migrate
 - Flask-SQLAlchemy (PostgreSQL was chosen)
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
-
-> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todo).
 
 ## API documentation
 
@@ -77,13 +79,18 @@ Nonetheless, the API always follows this response scheme :
 
 ## Setting up the web application
 
-:warning: :clock9: This step may take quite a lot of time due to npm's modules download
+:clock9: This step may take quite a lot of time due to npm's initial modules download
 
 Just run :
 
 ```bash
-docker-compose up app # Build is quick, **first** launch is long (expect at least 5 min.)
+# Build is quick, **first** launch is long (expect at least 5 min.)
+docker-compose up app
 ```
+
+You can now enjoy the app on `https://localhost:8080`
+
+> :information_source: If you want to add a dependency, just stop & re-launch a `docker-compose up app`. You won't have to wait as for first launch.
 
 ## Why using LDAP authentication ?
 
@@ -98,7 +105,7 @@ API :
 - Add LDAPS (secure LDAP) support
 - Create "profile information" route
 - Create "logout" route
-- Synchronise user LDAP profile in API database once logged in
+- Synchronize user LDAP profile in API database once logged in
 
 App :
 
@@ -110,6 +117,6 @@ Architecture :
 - Create a `prod.docker-compose.yml` file that :
   - Uses NGINX with SSL
   - Builds & serves the front-end
-  - Disables Swagger UI for the API
+  - Disables Swagger UI
 - Add "Deploy to prod" guide in README
 - Improve Docker networks security between containers
