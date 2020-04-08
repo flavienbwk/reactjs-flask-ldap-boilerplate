@@ -20,6 +20,11 @@ class Database():
         self.database.init_app(app)
 
     def save_changes(self, data=False):
+        """
+        Persists data to the database.
+
+        Don't use `data` if you .delete()
+        """
         try:
             if data is not False:
                 self.database.session.add(data)

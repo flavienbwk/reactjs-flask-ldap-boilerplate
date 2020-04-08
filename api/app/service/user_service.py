@@ -9,6 +9,7 @@ from utils.Logger import Logger
 from utils.ApiResponse import ApiResponse
 
 from model.User import User
+from model.Token import Token
 
 logger = Logger()
 
@@ -34,6 +35,29 @@ class UserService():
                 response.setMessage("An error occured while persisting data to the database")
         else:
             response.setMessage("User already exist in the database")
+        return response
+
+    @staticmethod
+    def getUserByToken(token_value: str):
+        user = User.query.join(Token).filter(Token.User_id == User.id).filter(Token.token == token_value).first()
+        return user
+
+    @staticmethod
+    def getProfile(user: User):
+        response = ApiResponse()
+        if user is not None:
+            response.setSuccess()
+            response.setMessage("Details of {} found".format(user.username))
+            response.setDetails({
+                "ids": user.ids,
+                "username": user.username,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+                "updated_at": user.updated_at
+            })
+        else:
+            response.setMessage("Impossible to find your profile")
         return response
 
     @staticmethod
