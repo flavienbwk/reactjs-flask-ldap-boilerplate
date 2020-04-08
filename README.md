@@ -104,7 +104,6 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 API :
 
-- [P1] Create "profile information" route
 - [P2] Synchronize user LDAP profile in API database once logged in
 - [P3] Add LDAPS (secure LDAP) support
 
