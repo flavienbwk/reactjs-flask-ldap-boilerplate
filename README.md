@@ -69,16 +69,6 @@ docker-compose up api
 
 Access the API and its documentation browsing [`http://localhost:5000`](http://localhost:5000)
 
-Nonetheless, the API always follows this response scheme :
-
-```json
-{
-    "error": boolean,
-    "message": string,
-    "details": object
-}
-```
-
 ## Setting up the web application
 
 :clock9: This step may take quite a lot of time due to npm's initial modules download
@@ -109,7 +99,6 @@ API :
 
 App :
 
-- [P1] Create the dashboard page with auto-redirection when logged in/out
 - [P2] Add periodic check for token (each 30 seconds)
 - [P3] Add loader when logging in
 

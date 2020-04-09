@@ -45,7 +45,7 @@ export class App extends Component {
                         <Switch>
                             <Route exact path="/" component={Home} />
                             <Route path="/login" render={ (props) => <Login {...props} authenticated={this.state.authenticated} onAuthUpdate={this.onAuthUpdate} /> } />
-                            <Route path="/dashboard" component={Dashboard} />
+                            <Route path="/dashboard" render={ (props) => <Dashboard {...props} authenticated={this.state.authenticated} /> } />
                             <Route path="/about" component={About} />
                         </Switch>
                     </Layout>

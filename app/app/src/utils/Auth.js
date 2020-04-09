@@ -34,7 +34,7 @@ export class Auth {
     /**
      * Returns false on cookie missing or invalid properties
      */
-    getUserProfileCookie() {
+    getUserProfile() {
         return this.cookies.get("profile")
     }
 
