@@ -1,7 +1,6 @@
 import 'react-notifications/lib/notifications.css';
 import React, { Component } from 'react'
 import { Container, Row, Col, Card, Jumbotron, Form, Button } from 'react-bootstrap'
-import { NotificationContainer } from 'react-notifications'
 import { Auth } from './utils/Auth'
 import { Ping } from './utils/Ping'
 import { Notifier } from './utils/Notifier'
@@ -93,7 +92,6 @@ export class Login extends Component {
             <Styles>
                 <Container>
                     <Row className="paddind-top">
-                        <NotificationContainer />
                         <Col lg={{ offset: 3, span: 6 }}>
                             <Card>
                                 <Card.Body>
