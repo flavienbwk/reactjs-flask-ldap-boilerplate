@@ -1,4 +1,6 @@
 import os
+import ldap
+import datetime
 
 import sys
 sys.path.append("..")
@@ -10,6 +12,13 @@ from utils.ApiResponse import ApiResponse
 
 from model.User import User
 from model.Token import Token
+
+LDAP_HOST = os.environ.get("LDAP_HOST")
+LDAP_PORT = os.environ.get("LDAP_PORT")
+LDAP_ENDPOINT = "ldap://{}:{}".format(LDAP_HOST, LDAP_PORT)
+LDAP_USERS_DN = os.environ.get("LDAP_USERS_DN")
+LDAP_ADMIN_DN = os.environ.get("LDAP_ADMIN_DN")
+LDAP_ADMIN_PASSWORD = os.environ.get("LDAP_ADMIN_PASSWORD")
 
 logger = Logger()
 
@@ -35,6 +44,44 @@ class UserService():
                 response.setMessage("An error occured while persisting data to the database")
         else:
             response.setMessage("User already exist in the database")
+        return response
+
+    @staticmethod
+    def updateLDAPUser(user: User):
+        """
+        Based on user's username.
+
+        Checks for any change in user database details
+        from its LDAP details. Updates any change in the
+        database.
+        """
+        response = ApiResponse()
+        search_filter = "(&(uid={})(objectClass=inetOrgPerson))".format(user.username)
+        try:
+            connection = ldap.initialize(LDAP_ENDPOINT)
+            connection.protocol_version = ldap.VERSION3
+            connection.simple_bind_s(LDAP_ADMIN_DN, LDAP_ADMIN_PASSWORD)
+            ldap_user = connection.search_s(LDAP_USERS_DN, ldap.SCOPE_SUBTREE, search_filter)
+            if len(ldap_user):
+                ldap_user_details = {
+                    "first_name": ldap_user[0][1]["givenName"][0].decode('utf-8'),
+                    "last_name": ldap_user[0][1]["sn"][0].decode('utf-8')
+                }
+                user_details = {
+                    "first_name": user.first_name,
+                    "last_name": user.last_name
+                }
+                response.setSuccess()
+                if ldap_user_details != user_details:
+                    user.first_name = ldap_user_details["first_name"]
+                    user.last_name = ldap_user_details["last_name"]
+                    user.updated_at = datetime.datetime.utcnow()
+                    if database.save_changes(user) is False:
+                        response.setError()
+                        response.setMessage("An error occured while persisting data to the database")
+        except ldap.LDAPError as e:
+            logger.debug("[AuthService.updateLDAPUser] Can't perform LDAP search")
+            logger.debug(e)
         return response
 
     @staticmethod

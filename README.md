@@ -94,11 +94,13 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 API :
 
-- [P2] Synchronize user LDAP profile in API database once logged in
+- [P1] Add "edit email address" route
 - [P3] Add LDAPS (secure LDAP) support
 
 App :
 
+- [P1] Add lateral navbar visible if user logged in
+- [P1] Add page to edit email address
 - [P3] Add loader when logging in
 
 Architecture :
