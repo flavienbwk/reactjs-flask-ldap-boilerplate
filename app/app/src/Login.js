@@ -41,16 +41,14 @@ export class Login extends Component {
             "password": "",
             "disable_form": false,
             "login_btn_text": "Login",
-            "authenticated": this.auth.isUserAuthenticated(),
             "profile": this.auth.getUserProfileCookie()
         }
     }
 
     onAuthUpdate = () => {
         this.setState({
-            "authenticated": this.auth.isUserAuthenticated(),
             "profile": this.auth.getUserProfileCookie(),
-            "disable_form": this.auth.isUserAuthenticated()
+            "disable_form": false
         })
     }
 
@@ -64,7 +62,6 @@ export class Login extends Component {
                 "disable_form": true,
                 "login_btn_text": "Connecting..."
             })
-            let disable_form = false
             const api_ping_query = await Ping.pingApi()
             if (api_ping_query) {
                 const api_auth_query = await this.auth.requestLDAPLogin(this.state.username, this.state.password)
@@ -74,7 +71,6 @@ export class Login extends Component {
                         api_auth_query
                     )
                     // @todo TODO(flavienbwk): Redirect the user to dashboard
-                    disable_form = true
                 } else {
                     Notifier.notifyFromResponse(api_auth_query, "Authentication")
                 }
@@ -86,7 +82,7 @@ export class Login extends Component {
                 )
             }
             this.setState({ 
-                "disable_form": disable_form,
+                "disable_form": false,
                 "login_btn_text": "Login"
             })
         }
@@ -108,7 +104,7 @@ export class Login extends Component {
                                         </p>
                                     </Jumbotron>
                                     {
-                                        (this.state.authenticated === false)
+                                        (this.props.authenticated === false)
                                         ?
                                         (
                                             <Form>

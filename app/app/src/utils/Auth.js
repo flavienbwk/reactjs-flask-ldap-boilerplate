@@ -13,7 +13,7 @@ export class Auth {
     /**
      * Triggers the list of callbacks provided in the constructor.
      */
-    onAuthCallback() {
+    onAuthUpdateCallback() {
         for (var callback of this.onAuthUpdateCallbacks)
             callback()
     }
@@ -53,7 +53,7 @@ export class Auth {
                     "expires_at": api_auth_query.details.expires_at
                 })
                 await this.updateUserProfile()
-                this.onAuthCallback()
+                this.onAuthUpdateCallback()
             }
             Notifier.notifyFromResponse(api_auth_query, "Authentication")
         } else {
@@ -77,7 +77,7 @@ export class Auth {
                     "email": ("email" in user_profile_query.details) ? user_profile_query.details.email : "",
                     "updated_at": user_profile_query.details.updated_at,
                 })
-                this.onAuthCallback()
+                this.onAuthUpdateCallback()
             } else {
                 Notifier.notifyFromResponse(user_profile_query, "Profile details")
             }
@@ -110,7 +110,7 @@ export class Auth {
                 "Client logout",
                 "Successfuly logged you out"
             )
-            this.onAuthCallback()
+            this.onAuthUpdateCallback()
         }
     }
 
@@ -154,7 +154,7 @@ export class Auth {
                 user_authenticated = true
             }
             this.cookies.set("authentication", auth_cookie)
-            this.onAuthCallback()
+            this.onAuthUpdateCallback()
         }
         return user_authenticated
     }

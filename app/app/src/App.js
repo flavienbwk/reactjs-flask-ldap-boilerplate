@@ -20,9 +20,12 @@ export class App extends Component {
     }
 
     /**
-     * Component <Login> will trigger this parent event to
+     * Child components may trigger this parent event to
      * inform other routes (<NavigationBar> for example),
      * that authentication information have been updated.
+     * 
+     * This allows to show the "Login" or "Logout" button
+     * depending on user's authentication status.
      */
     onAuthUpdate = () => {
         this.setState({
@@ -34,11 +37,11 @@ export class App extends Component {
             return (
             <React.Fragment>
                 <Router basename={packageJson["homepage"] + "/"}>
-                    <NavigationBar authenticated={this.state.authenticated} />
+                    <NavigationBar authenticated={this.state.authenticated} onAuthUpdate={this.onAuthUpdate} />
                     <Layout>
                         <Switch>
                             <Route exact path="/" component={Home} />
-                            <Route path="/login" render={ (props) => <Login {...props} onAuthUpdate={this.onAuthUpdate} /> } />
+                            <Route path="/login" render={ (props) => <Login {...props} authenticated={this.state.authenticated} onAuthUpdate={this.onAuthUpdate} /> } />
                             <Route path="/about" component={About} />
                         </Switch>
                     </Layout>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Button } from 'react-bootstrap';
+import { Auth } from './utils/Auth'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import packageJson from '../package.json';
@@ -26,6 +27,11 @@ const Styles = styled.div`
 
 export class NavigationBar extends Component {
 
+    constructor(props) {
+        super(props)
+        this.auth = new Auth([ this.props.onAuthUpdate ])
+    }
+
     render() {
         return (
             <Styles>
@@ -43,7 +49,7 @@ export class NavigationBar extends Component {
                         <Nav className="ml-auto">
                             {
                                 (this.props.authenticated)
-                                ? <Nav.Link as={Link} to={'/login'}>Logout</Nav.Link>
+                                ? <Button variant="default" onClick={this.auth.logoutUser}>Logout</Button>
                                 : <Nav.Link as={Link} to={'/login'}>Login</Nav.Link>
                             }
                             <Nav.Link as={Link} to={'/about'}>About</Nav.Link>
