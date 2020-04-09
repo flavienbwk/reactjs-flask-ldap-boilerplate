@@ -19,7 +19,21 @@ export class App extends Component {
         this.state = {
             "authenticated": this.auth.isUserAuthenticated()
         }
+        this.periodicLoginCheck(60)
     }
+
+    /**
+     * Periodically checks for user authentication
+     * 
+     * @param {int} seconds 
+     */
+    periodicLoginCheck(seconds = 60) {
+        const interval = setInterval(() => {
+            if (this.state.authenticated)
+                this.auth.checkUserToken()
+        }, seconds * 1000);
+        return () => clearInterval(interval);
+    };
 
     /**
      * Child components may trigger this parent event to

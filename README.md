@@ -99,7 +99,6 @@ API :
 
 App :
 
-- [P2] Add periodic check for token (each 30 seconds)
 - [P3] Add loader when logging in
 
 Architecture :
