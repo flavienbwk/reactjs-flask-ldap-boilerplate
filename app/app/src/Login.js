@@ -30,7 +30,12 @@ export class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.auth = new Auth(this.onAuthUpdate)
+        // Passing a list of callbacks to update the
+        // parent component <App/> and <Login>'s component.
+        this.auth = new Auth([
+            this.props.onAuthUpdate,
+            this.onAuthUpdate
+        ])
         this.state = {
             "username": "",
             "password": "",
@@ -44,7 +49,8 @@ export class Login extends Component {
     onAuthUpdate = () => {
         this.setState({
             "authenticated": this.auth.isUserAuthenticated(),
-            "profile": this.auth.getUserProfileCookie()
+            "profile": this.auth.getUserProfileCookie(),
+            "disable_form": this.auth.isUserAuthenticated()
         })
     }
 

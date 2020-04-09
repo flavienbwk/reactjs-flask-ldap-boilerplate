@@ -109,6 +109,7 @@ API :
 
 App :
 
+- [P0] Spread auth updates through `<App>` and its childs
 - [P1] Create the dashboard page with auto-redirection when logged in/out
 - [P2] Add periodic check for token (each 30 seconds)
 - [P3] Add loader when logging in

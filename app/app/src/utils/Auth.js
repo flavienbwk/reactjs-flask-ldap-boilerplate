@@ -4,11 +4,18 @@ import { User } from './User'
 
 export class Auth {
 
-    constructor(onAuthUpdate = () => {}) {
+    constructor(onAuthUpdateCallbacks = [() => {}]) {
         this.cookies = new Cookies()
         this.api_endpoint = "http://localhost:5000/api"
-        this.authenticated = this.#checkUserToken()
-        this.onAuthUpdate = onAuthUpdate // Callbacked if any update has been done to the "authentication" token
+        this.onAuthUpdateCallbacks = onAuthUpdateCallbacks // Callbacked if any update has been done to the "authentication" token
+    }
+
+    /**
+     * Triggers the list of callbacks provided in the constructor.
+     */
+    onAuthCallback() {
+        for (var callback of this.onAuthUpdateCallbacks)
+            callback()
     }
 
     /**
@@ -46,7 +53,7 @@ export class Auth {
                     "expires_at": api_auth_query.details.expires_at
                 })
                 await this.updateUserProfile()
-                this.onAuthUpdate()
+                this.onAuthCallback()
             }
             Notifier.notifyFromResponse(api_auth_query, "Authentication")
         } else {
@@ -70,7 +77,7 @@ export class Auth {
                     "email": ("email" in user_profile_query.details) ? user_profile_query.details.email : "",
                     "updated_at": user_profile_query.details.updated_at,
                 })
-                this.onAuthUpdate()
+                this.onAuthCallback()
             } else {
                 Notifier.notifyFromResponse(user_profile_query, "Profile details")
             }
@@ -103,7 +110,7 @@ export class Auth {
                 "Client logout",
                 "Successfuly logged you out"
             )
-            this.onAuthUpdate()
+            this.onAuthCallback()
         }
     }
 
@@ -126,7 +133,7 @@ export class Auth {
      * 
      * Returns the validity status of the token. 
      */
-    #checkUserToken = async () => {
+    checkUserToken = async () => {
         let user_authenticated = false
         let auth_cookie = this.cookies.get("authentication")
         if (auth_cookie 
@@ -147,7 +154,7 @@ export class Auth {
                 user_authenticated = true
             }
             this.cookies.set("authentication", auth_cookie)
-            this.onAuthUpdate()
+            this.onAuthCallback()
         }
         return user_authenticated
     }

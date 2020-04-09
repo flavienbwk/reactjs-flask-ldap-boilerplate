@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -24,24 +24,36 @@ const Styles = styled.div`
     }
 `;
 
-export const NavigationBar = () => (
-    <Styles>
-        <Navbar bg="light" expand="lg">
-            <Navbar.Brand as={Link} to={'/'}>
-                <img
-                    alt="Logo My Project"
-                    src={packageJson["homepage"] + "/logo.png"}
-                    className="d-inline-block align-top brand-image"
-                />
-                {'My Project'}
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ml-auto">
-                    <Nav.Link as={Link} to={'/'}>Search</Nav.Link>
-                    <Nav.Link as={Link} to={'/about'}>About</Nav.Link>
-                </Nav>
-            </Navbar.Collapse>
-        </Navbar>
-    </Styles>
-)
+export class NavigationBar extends Component {
+
+    render() {
+        return (
+            <Styles>
+                <Navbar bg="light" expand="lg">
+                    <Navbar.Brand as={Link} to={'/'}>
+                        <img
+                            alt="Logo My Project"
+                            src={packageJson["homepage"] + "/logo.png"}
+                            className="d-inline-block align-top brand-image"
+                        />
+                        {'My Project'}
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ml-auto">
+                            {
+                                (this.props.authenticated)
+                                ? <Nav.Link as={Link} to={'/login'}>Logout</Nav.Link>
+                                : <Nav.Link as={Link} to={'/login'}>Login</Nav.Link>
+                            }
+                            <Nav.Link as={Link} to={'/about'}>About</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+            </Styles>
+        )
+    }
+
+}
+
+export default NavigationBar;
