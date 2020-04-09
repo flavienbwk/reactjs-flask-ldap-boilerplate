@@ -32,6 +32,8 @@ Here you can take a look at the database architecture scheme :
     <img src="./api/database.png"/>
 </p>
 
+> Reminder : there is no `password` field because we use LDAP for authentication.
+
 ## Setting up the API
 
 The API is made to run with an LDAP server for managing users. Whether use the provided Docker LDAP server or remove the conf. in [`docker-compose.yml`](./docker-compose.yml) and use your own LDAP server.
@@ -88,7 +90,7 @@ Just run :
 docker-compose up app
 ```
 
-You can now enjoy the app on [`https://localhost:8080`](https://localhost:8080)
+You can now enjoy the app on [`http://localhost:8080`](http://localhost:8080)
 
 > :information_source: If you want to add a dependency, just stop & re-launch a `docker-compose up app`. You won't have to wait as for first launch.
 
@@ -102,21 +104,20 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 API :
 
-- Add LDAPS (secure LDAP) support
-- Create "profile information" route
-- Create "logout" route
-- Synchronize user LDAP profile in API database once logged in
+- [P2] Synchronize user LDAP profile in API database once logged in
+- [P3] Add LDAPS (secure LDAP) support
 
 App :
 
-- Create the dashboard page with auto-redirection when logged in/out
-- Get profile details from API
+- [P1] Create the dashboard page with auto-redirection when logged in/out
+- [P2] Add periodic check for token (each 30 seconds)
+- [P3] Add loader when logging in
 
 Architecture :
 
-- Create a `prod.docker-compose.yml` file that :
+- [P3] Add "Deploy to prod" guide in README
+- [P3] Create a `prod.docker-compose.yml` file that :
   - Uses NGINX with SSL
   - Builds & serves the front-end
   - Disables Swagger UI
-- Add "Deploy to prod" guide in README
-- Improve Docker networks security between containers
+- [P4] Improve Docker networks security between containers

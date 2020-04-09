@@ -30,15 +30,26 @@ export class Login extends Component {
 
     constructor(props) {
         super(props);
-        this.auth = new Auth()
+        // Passing a list of callbacks to update the
+        // parent component <App/> and <Login>'s component.
+        this.auth = new Auth([
+            this.props.onAuthUpdate,
+            this.onAuthUpdate
+        ])
         this.state = {
             "username": "",
             "password": "",
             "disable_form": false,
             "login_btn_text": "Login",
-            "authenticated": this.auth.isUserAuthenticated(),
             "profile": this.auth.getUserProfileCookie()
         }
+    }
+
+    onAuthUpdate = () => {
+        this.setState({
+            "profile": this.auth.getUserProfileCookie(),
+            "disable_form": false
+        })
     }
 
     onUsernameChange = (event) => this.setState({ "username": event.target.value })
@@ -51,20 +62,15 @@ export class Login extends Component {
                 "disable_form": true,
                 "login_btn_text": "Connecting..."
             })
-            let disable_form = false
             const api_ping_query = await Ping.pingApi()
             if (api_ping_query) {
-                const api_auth_query = await this.auth.requestLDAPLogin(
-                    this.state.username,
-                    this.state.password
-                )
+                const api_auth_query = await this.auth.requestLDAPLogin(this.state.username, this.state.password)
                 if (api_auth_query && api_auth_query.error === false) {
                     this.auth.registerUserAuthentication(
                         this.state.username,
                         api_auth_query
                     )
                     // @todo TODO(flavienbwk): Redirect the user to dashboard
-                    disable_form = true
                 } else {
                     Notifier.notifyFromResponse(api_auth_query, "Authentication")
                 }
@@ -76,10 +82,8 @@ export class Login extends Component {
                 )
             }
             this.setState({ 
-                "disable_form": disable_form,
-                "login_btn_text": "Login",
-                "authenticated": this.auth.isUserAuthenticated(),
-                "profile": this.auth.getUserProfileCookie()
+                "disable_form": false,
+                "login_btn_text": "Login"
             })
         }
     }
@@ -100,7 +104,7 @@ export class Login extends Component {
                                         </p>
                                     </Jumbotron>
                                     {
-                                        (this.state.authenticated === false)
+                                        (this.props.authenticated === false)
                                         ?
                                         (
                                             <Form>
@@ -136,10 +140,16 @@ export class Login extends Component {
                                         :
                                         <div>
                                             <h3 className="center">You are already authenticated !</h3>
-                                            <p className="center">{ this.state.profile.username }, do you want to :</p>
+                                            <p className="center">
+                                                { 
+                                                    this.state.profile !== undefined && "first_name" in this.state.profile 
+                                                    ? this.state.profile.first_name 
+                                                    : "Tell me" 
+                                                }, do you want to :
+                                            </p>
                                             <ul>
                                                 <li>Go to your dashboard ?</li>
-                                                <li>Logout ?</li>
+                                                <li><button onClick={this.auth.logoutUser}>Logout ?</button></li>
                                             </ul>
                                         </div>    
                                     }
