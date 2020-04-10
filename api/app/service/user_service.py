@@ -125,13 +125,14 @@ class UserService():
                     if validate_email(updates["email"]):
                         perform_update = True
                         user.email = updates["email"]
+                        user.updated
                     else:
                         response.setMessage("Invalid e-mail address provided")
             if perform_update:
                 if database.save_changes(user) is False:
                     response.setMessage("An error occured while saving user's details")
                 else:
-                    logger.info("{}'s email address changed from '{}' to '{}'".format(
+                    logger.info("[UserService.updateProfile] {}'s email address changed from '{}' to '{}'".format(
                         user.username,
                         old_email,
                         updates["email"]
