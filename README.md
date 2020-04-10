@@ -94,7 +94,6 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 API :
 
-- [P1] Add "edit email address" route
 - [P3] Add LDAPS (secure LDAP) support
 
 App :
