@@ -1,6 +1,8 @@
 import os
 import ldap
+import json
 import datetime
+from validate_email import validate_email
 
 import sys
 sys.path.append("..")
@@ -77,6 +79,11 @@ class UserService():
                     user.last_name = ldap_user_details["last_name"]
                     user.updated_at = datetime.datetime.utcnow()
                     if database.save_changes(user) is False:
+                        logger.info("User {} was updated from {} to {}".format(
+                            user.username,
+                            json.dumps(user_details),
+                            json.dumps(ldap_user_details)
+                        ))
                         response.setError()
                         response.setMessage("An error occured while persisting data to the database")
         except ldap.LDAPError as e:
@@ -103,6 +110,37 @@ class UserService():
                 "email": user.email,
                 "updated_at": user.updated_at
             })
+        else:
+            response.setMessage("Impossible to find your profile")
+        return response
+
+    @staticmethod
+    def updateProfile(user: User, updates: dict):
+        response = ApiResponse()
+        if user is not None:
+            perform_update = False
+            old_email = user.email
+            if "email" in updates:
+                if user.email != updates["email"]:
+                    if validate_email(updates["email"]):
+                        perform_update = True
+                        user.email = updates["email"]
+                    else:
+                        response.setMessage("Invalid e-mail address provided")
+            if perform_update:
+                if database.save_changes(user) is False:
+                    response.setMessage("An error occured while saving user's details")
+                else:
+                    logger.info("{}'s email address changed from '{}' to '{}'".format(
+                        user.username,
+                        old_email,
+                        updates["email"]
+                    ))
+                    response.setMessage("Email successfuly updated")
+                    response.setSuccess()
+            if len(response.message) == 0:
+                response.setMessage("Nothing was updated")
+                response.setSuccess()
         else:
             response.setMessage("Impossible to find your profile")
         return response
