@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Nav, Navbar, Button } from 'react-bootstrap';
+import React, { Component } from 'react'
+import { Nav, Navbar, Button } from 'react-bootstrap'
 import { Auth } from './utils/Auth'
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import packageJson from '../package.json';
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import packageJson from '../package.json'
 
 const Styles = styled.div`
     .navbar {

@@ -1,6 +1,7 @@
 import 'react-notifications/lib/notifications.css';
 import React, { Component } from 'react'
 import { Container, Row, Col, Card, Jumbotron, Form, Button } from 'react-bootstrap'
+import Loader from 'react-loader-spinner'
 import { Redirect } from 'react-router-dom'
 import { Auth } from './utils/Auth'
 import { Ping } from './utils/Ping'
@@ -40,7 +41,6 @@ export class Login extends Component {
             "username": "",
             "password": "",
             "disable_form": false,
-            "login_btn_text": "Login",
             "profile": this.auth.getUserProfile()
         }
     }
@@ -58,10 +58,7 @@ export class Login extends Component {
 
     onFormSubmitted = async (event) => {
         if (this.state.username.length && this.state.password.length) {
-            this.setState({ 
-                "disable_form": true,
-                "login_btn_text": "Connecting..."
-            })
+            this.setState({ "disable_form": true })
             const api_ping_query = await Ping.pingApi()
             if (api_ping_query) {
                 const api_auth_query = await this.auth.requestLDAPLogin(this.state.username, this.state.password)
@@ -81,10 +78,7 @@ export class Login extends Component {
                     "Please check your internet connection"
                 )
             }
-            this.setState({ 
-                "disable_form": false,
-                "login_btn_text": "Login"
-            })
+            this.setState({ "disable_form": false })
         }
     }
 
@@ -134,7 +128,18 @@ export class Login extends Component {
                                                     disabled={this.state.disable_form}
                                                     onClick={this.onFormSubmitted}
                                                 >
-                                                    { this.state.login_btn_text }
+                                                    {
+                                                        this.state.disable_form
+                                                        ?
+                                                        <Loader
+                                                            type="TailSpin"
+                                                            color="#fff"
+                                                            height={28}
+                                                            width={28}
+                                                        />
+                                                        :
+                                                        <>Login</>
+                                                    }
                                                 </Button>
                                             </Form>
                                         )
