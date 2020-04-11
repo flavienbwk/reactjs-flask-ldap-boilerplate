@@ -69,16 +69,6 @@ docker-compose up api
 
 Access the API and its documentation browsing [`http://localhost:5000`](http://localhost:5000)
 
-Nonetheless, the API always follows this response scheme :
-
-```json
-{
-    "error": boolean,
-    "message": string,
-    "details": object
-}
-```
-
 ## Setting up the web application
 
 :clock9: This step may take quite a lot of time due to npm's initial modules download
@@ -104,13 +94,12 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 API :
 
-- [P2] Synchronize user LDAP profile in API database once logged in
 - [P3] Add LDAPS (secure LDAP) support
 
 App :
 
-- [P1] Create the dashboard page with auto-redirection when logged in/out
-- [P2] Add periodic check for token (each 30 seconds)
+- [P1] Add lateral navbar visible if user logged in
+- [P1] Add page to edit email address
 - [P3] Add loader when logging in
 
 Architecture :

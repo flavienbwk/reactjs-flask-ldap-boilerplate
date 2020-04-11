@@ -77,8 +77,10 @@ class AuthService():
                 user = User.query.filter_by(username=username).first()
 
             if user is not None:
-                response = TokenService.generateUserToken(user.id)
-                response.message = response.message if (response.error) else "Authentication succeeded" 
+                response = UserService.updateLDAPUser(user)
+                if (response.error is False):
+                    response = TokenService.generateUserToken(user.id)
+                    response.message = response.message if (response.error) else "Authentication succeeded" 
             else:
                 logger.error("Impossible to find the profile of " + username)
                 response.setMessage("Impossible to find your profile")
@@ -91,24 +93,18 @@ class AuthService():
     def checkLDAPCredentials(username: str, password: str):
         return_value = False
         search_filter = "(&(uid={})(objectClass=inetOrgPerson))".format(username)
-        logger.debug("Trying to connect LDAP " + LDAP_ENDPOINT)
         try:
             connection = ldap.initialize(LDAP_ENDPOINT)
             connection.protocol_version = ldap.VERSION3
-            logger.debug("Successfully reached LDAP endpoint")
             connection.simple_bind_s(LDAP_ADMIN_DN, LDAP_ADMIN_PASSWORD)
-            logger.debug("Successfully connected as admin")
             result = connection.search_s(LDAP_USERS_DN, ldap.SCOPE_SUBTREE, search_filter)
             if len(result):
                 user_dn = result[0][0]
-                logger.debug("Successfuly found user DN :")
-                logger.debug(user_dn)
                 connection.simple_bind_s(user_dn, password)
                 return_value = True
-                logger.debug("Successfuly authenticated " + username)
             connection.unbind()
         except ldap.LDAPError as e:
-            logger.debug("Can't perform LDAP authentication for " + username)
+            logger.debug("[AuthService.checkLDAPCredentials] Can't perform LDAP authentication for " + username)
             logger.debug(e)
         return result if return_value is not False else False
 

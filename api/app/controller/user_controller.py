@@ -27,6 +27,15 @@ user_profile_response_dto = api.model('user_profile_response', {
     )
 })
 
+user_profile_update_dto = api.model('user_profile_update', {
+    'email': fields.String(required=True, description='New user email')
+})
+user_profile_update_response_dto = api.model('user_profile_update_response', {
+    'error': fields.Boolean(description="True on error, false on success"),
+    'message': fields.String(description="Some error or success message"),
+    'details': fields.Nested(api.model('user_profile_update_response_details', {}))
+})
+
 user_header_token_dto = api.parser()
 user_header_token_dto.add_argument(
     'X-Api-Auth-Token', 
@@ -48,3 +57,20 @@ class Profile(Resource):
         token_value = escape(request.headers["X-Api-Auth-Token"])
         user = UserService.getUserByToken(token_value)
         return UserService.getProfile(user).getResponse()
+
+@api.route(
+    '/profile/update', 
+    doc={"description": "Allows to edit user's email address"}
+)
+class Profile(Resource):
+
+    @api.marshal_with(user_profile_update_response_dto, skip_none=True)
+    @api.expect(user_profile_update_dto, user_header_token_dto, validate=True)
+    @requires_authentication
+    def post(self):
+        token_value = escape(request.headers["X-Api-Auth-Token"])
+        user = UserService.getUserByToken(token_value)
+        return UserService.updateProfile(user, {
+            "email": escape(request.json["email"])
+        }).getResponse()
+        

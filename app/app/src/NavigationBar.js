@@ -49,8 +49,13 @@ export class NavigationBar extends Component {
                         <Nav className="ml-auto">
                             {
                                 (this.props.authenticated)
-                                ? <Button variant="default" onClick={this.auth.logoutUser}>Logout</Button>
-                                : <Nav.Link as={Link} to={'/login'}>Login</Nav.Link>
+                                ? 
+                                <>
+                                    <Nav.Link as={Link} to={'/dashboard'}>Dashboard</Nav.Link>
+                                    <Button variant="default" onClick={this.auth.logoutUser}>Logout</Button>
+                                </>
+                                : 
+                                <Nav.Link as={Link} to={'/login'}>Login</Nav.Link>
                             }
                             <Nav.Link as={Link} to={'/about'}>About</Nav.Link>
                         </Nav>

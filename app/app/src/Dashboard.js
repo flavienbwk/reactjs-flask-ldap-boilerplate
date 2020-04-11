@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Jumbotron, } from 'react-bootstrap';
+import { Container, Row, Col, Jumbotron, Alert } from 'react-bootstrap'
+import { Redirect } from 'react-router-dom'
+import { Auth } from './utils/Auth'
 import styled from 'styled-components'
 
 const Styles = styled.div`
@@ -15,19 +17,30 @@ const Styles = styled.div`
     }
 `
 
-class Dashboard extends Component {
+export class Dashboard extends Component {
+
+    constructor(props) {
+        super(props);
+        this.auth = new Auth()
+        this.state = { "profile": this.auth.getUserProfile() }
+    }
 
     render() {
+        if (this.props.authenticated === false)
+            return <Redirect to='/login' />
         return (
             <Styles>
                 <Container>
                     <Row className="paddind-bottom">
                         <Col lg={{ span: 12 }} className="center">
                             <Jumbotron>
-                                <h1>Hello</h1>
+                                <h1>Hello { this.state.profile.first_name } !</h1>
                                 <p>
                                     You are on your dashboard page.
                                 </p>
+                                <Alert variant={"dark"}>
+                                    You are logged in as <b>{ this.state.profile.username }</b>
+                                </Alert>
                             </Jumbotron>
                         </Col>
                     </Row>
