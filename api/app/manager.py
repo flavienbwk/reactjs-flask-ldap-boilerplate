@@ -32,6 +32,7 @@ def after_request(response):
     response.direct_passthrough = False
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,X-Api-Auth-Token')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,OPTIONS')
     return ApiResponse.formatFlaskResponse(response)
 
 if __name__ == '__main__':

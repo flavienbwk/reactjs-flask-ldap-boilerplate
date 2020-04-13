@@ -4,6 +4,8 @@ import Loader from 'react-loader-spinner'
 import { Redirect } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { Auth } from './utils/Auth'
+import { User } from './utils/User'
+import { Notifier } from './utils/Notifier'
 import styled from 'styled-components'
 
 const Styles = styled.div`
@@ -31,9 +33,35 @@ export class Profile extends Component {
     constructor(props) {
         super(props);
         this.auth = new Auth()
+        this.profile = this.auth.getUserProfile()
         this.state = {
             "disable_form": false,
-            "profile": this.auth.getUserProfile() 
+            "profile": this.profile,
+            "email": this.profile.email
+        }
+    }
+
+    onEmailChange = (event) => this.setState({ "email": event.target.value })
+
+    onFormSubmitted = async (event) => {
+        event.preventDefault()
+        if (this.state.email.length) {
+            if (this.state.profile.email !== this.state.email) {
+                this.setState({ "disable_form": true })
+                const update_query = await User.updateUserProfile({ "email": this.state.email })
+                if (update_query) {
+                    Notifier.notifyFromResponse(update_query)
+                    this.auth.updateUserProfile()
+                    this.setState({ "profile": this.auth.getUserProfile() })
+                } else {
+                    Notifier.createNotification(
+                        "error", 
+                        "Query failed", 
+                        "Please check your internet connection"
+                    )
+                }
+                this.setState({ "disable_form": false })
+            }
         }
     }
 
@@ -66,6 +94,7 @@ export class Profile extends Component {
                                                 <Form.Control 
                                                     type="email"
                                                     placeholder="Enter email"
+                                                    onChange={ this.onEmailChange }
                                                     defaultValue={ this.state.profile.email }
                                                     disabled={ this.state.disable_form }
                                                 />
@@ -76,6 +105,7 @@ export class Profile extends Component {
                                                 <Button 
                                                     variant="primary" 
                                                     type="submit"
+                                                    onClick={ this.onFormSubmitted }
                                                     disabled={ this.state.disable_form }
                                                 >
                                                     {

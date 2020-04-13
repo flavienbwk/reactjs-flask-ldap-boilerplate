@@ -43,7 +43,7 @@ export class Auth {
      * will register cookies including its connection
      * token and profile details.
      */
-    registerUserAuthentication = async (username, api_auth_query) => {
+    registerUserAuthentication = async (api_auth_query) => {
         if (api_auth_query) {
             if ("error" in api_auth_query && api_auth_query.error === false) {
                 // Save auth token

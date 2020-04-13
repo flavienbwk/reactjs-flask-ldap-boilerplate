@@ -63,11 +63,7 @@ export class Login extends Component {
             if (api_ping_query) {
                 const api_auth_query = await this.auth.requestLDAPLogin(this.state.username, this.state.password)
                 if (api_auth_query && api_auth_query.error === false) {
-                    this.auth.registerUserAuthentication(
-                        this.state.username,
-                        api_auth_query
-                    )
-                    // @todo TODO(flavienbwk): Redirect the user to dashboard
+                    this.auth.registerUserAuthentication(api_auth_query)
                 } else {
                     Notifier.notifyFromResponse(api_auth_query, "Authentication")
                 }
