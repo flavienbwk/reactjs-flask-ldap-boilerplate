@@ -99,7 +99,6 @@ API :
 App :
 
 - [P1] Add lateral navbar visible if user logged in
-- [P3] Add loader when logging in
 
 Architecture :
 
