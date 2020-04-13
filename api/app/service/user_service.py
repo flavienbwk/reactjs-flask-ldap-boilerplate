@@ -125,7 +125,7 @@ class UserService():
                     if validate_email(updates["email"]):
                         perform_update = True
                         user.email = updates["email"]
-                        user.updated
+                        user.updated_at = datetime.datetime.utcnow()
                     else:
                         response.setMessage("Invalid e-mail address provided")
             if perform_update:

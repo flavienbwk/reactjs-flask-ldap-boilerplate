@@ -38,7 +38,7 @@ services:
       POSTGRES_DB: "myproject"
 
   adminer:
-    image: adminer
+    image: adminer:4.7.6
     restart: always
     ports:
       - 8082:8080
