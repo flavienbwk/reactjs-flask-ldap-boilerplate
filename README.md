@@ -9,8 +9,6 @@
 
 > :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
 
-> :information_source: The [ReactJS part](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/tree/fe/initial-architecture) is under development. [See TODOs](#left-todos).
-
 ## Features
 
 - Docker architecture
@@ -21,6 +19,8 @@
 - Flask-Migrate
 - Flask-SQLAlchemy (PostgreSQL was chosen)
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
+- [Choose](./api/app/src/App.js#L64) between sidebar and navbar (or use both !)
+- Response design
 
 ## API documentation
 
@@ -98,8 +98,7 @@ API :
 
 App :
 
-- [P1] Add lateral navbar visible if user logged in
-- [P3] Add loader when logging in
+_Completed_
 
 Architecture :
 
