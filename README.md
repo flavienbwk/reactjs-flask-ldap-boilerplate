@@ -20,7 +20,7 @@
 - Flask-SQLAlchemy (PostgreSQL was chosen)
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
 - [Choose](./api/app/src/App.js#L64) between sidebar and navbar (or use both !)
-- Response design
+- Responsive design
 
 ## API documentation
 
