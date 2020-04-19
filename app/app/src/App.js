@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import { NotificationContainer } from 'react-notifications'
 import { NavigationBar } from './NavigationBar'
+import { SideBar } from './SideBar'
 import { Auth } from './utils/Auth'
 import { Layout } from './Layout'
 import Home from './Home'
@@ -55,7 +56,15 @@ export class App extends Component {
             <React.Fragment>
                 <Router basename={packageJson["homepage"] + "/"}>
                     <NotificationContainer />
-                    <NavigationBar authenticated={this.state.authenticated} onAuthUpdate={this.onAuthUpdate} />
+                    {
+                        // By default, a classic navbar displays when user is logged out
+                        // and a sidebar displays when it is connected.
+                        //
+                        // You can leave as it is or choose the one or the user, or mix both !
+                        (this.state.authenticated)
+                        ? <SideBar authenticated={this.state.authenticated} onAuthUpdate={this.onAuthUpdate} />
+                        : <NavigationBar authenticated={this.state.authenticated} onAuthUpdate={this.onAuthUpdate} />
+                    }
                     <Layout>
                         <Switch>
                             <Route exact path="/" component={Home} />

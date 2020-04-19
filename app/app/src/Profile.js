@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Container, Nav, Row, Col, Jumbotron, Table, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Jumbotron, Table, Form, Button } from 'react-bootstrap'
 import Loader from 'react-loader-spinner'
 import { Redirect } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 import { Auth } from './utils/Auth'
 import { User } from './utils/User'
 import { Notifier } from './utils/Notifier'
@@ -76,9 +75,6 @@ export class Profile extends Component {
                             <Jumbotron>
                                 <h1>Edit your profile</h1>
                             </Jumbotron>
-                            <Nav.Link as={Link} to={'/dashboard'} className="left">
-                                <Button variant="secondary">&lt; Dashboard</Button>
-                            </Nav.Link>
                             <Form>
                                 <Table striped bordered hover>
                                     <thead>

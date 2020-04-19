@@ -14,7 +14,9 @@
     "react-notifications": "1.6.0",
     "react-cookie": "4.0.3",
     "@trendmicro/react-sidenav": "0.5.0",
-    "react-loader-spinner": "3.1.14"
+    "react-loader-spinner": "3.1.14",
+    "react-click-outsider": "^1.1.1",
+    "react-bootstrap-icons": "1.0.1-alpha3"
   },
   "scripts": {
     "start": "/app/node_modules/react-scripts/bin/react-scripts.js start",
