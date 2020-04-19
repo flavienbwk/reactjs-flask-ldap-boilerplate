@@ -19,7 +19,7 @@
 - Flask-Migrate
 - Flask-SQLAlchemy (PostgreSQL was chosen)
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
-- [Choose](./api/app/src/App.js#L64) between sidebar and navbar (or use both !)
+- [Choose](./app/app/src/App.js#L64) between sidebar and navbar (or use both !)
 - Responsive design
 
 ## API documentation
