@@ -4,6 +4,7 @@
     <a href="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-boilerplate.svg?branch=master" target="_blank">
         <img src="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-boilerplate.svg?branch=master"/>
     </a>
+    <a href="https://codebeat.co/projects/github-com-flavienbwk-reactjs-flask-ldap-boilerplate-master"><img alt="codebeat badge" src="https://codebeat.co/badges/940a0bd0-5aa5-4f96-b6fc-39b6e1b7e14b" /></a>
 </p>
 <p align="center">ReactJS + Flask + Docker<br/>boilerplate using a token-based LDAP authentication</p>
 
