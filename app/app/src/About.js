@@ -8,7 +8,6 @@ export class About extends Component {
             <div>
                 <h2>About</h2>
                 <p>This app is a free and open-source <a target="_blank" rel="noopener noreferrer" href="https://github.com/flavienbwk/reactjs-flask-ldap-docker-boilerplate">boilerplate</a> brought to you by <a target="_blank" rel="noopener noreferrer" href="https://flavien.berwick.fr/en">Flavien Berwick</a>.</p>
-                <p>The search engine included in the Python API will try to find the images according to their filename.</p>
                 <p>If you find an issue or have a suggestion, <a target="_blank" rel="noopener noreferrer" href="https://github.com/flavienbwk/reactjs-flask-ldap-docker-boilerplate/issues">please open an issue on Github</a>.</p>
                 <hr />
                 <p>Version <b>{packageJson["version"]}</b></p>
