@@ -15,7 +15,8 @@ services:
         LDAP_DOMAIN: "mycompany.com"
         LDAP_ADMIN_PASSWORD: "adminpwd"
     volumes:
-        - './ldap-data:/var/lib/ldap'
+        - './ldap/data:/var/lib/ldap'
+        - './ldap/slapd:/etc/ldap/slapd.d'
 
   phpldapadmin:
     image: osixia/phpldapadmin:0.9.0
