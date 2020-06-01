@@ -3,5 +3,6 @@
 web/app/node_modules/
 ldap-data/
 logs/
+migrations/
 
 api/database.mwb.bak
