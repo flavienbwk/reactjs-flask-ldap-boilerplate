@@ -33,7 +33,8 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,X-Api-Auth-Token')
     response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,OPTIONS')
-    return ApiResponse.formatFlaskResponse(response)
+    response, http_code = ApiResponse.formatFlaskResponse(response)
+    return app.make_response((response, http_code))
 
 if __name__ == '__main__':
     manager.run()
