@@ -6,7 +6,7 @@ class ApiResponse():
     A class that formats correctly the expected
     response from the web applicaiton.
 
-    @author : github.com/flavienbwk | berwic_f
+    @author : github.com/flavienbwk
     """
 
     def __init__(self) -> None:
@@ -38,13 +38,13 @@ class ApiResponse():
     def setHTTPCode(self, http_code: int) -> None:
         self.http_code = http_code
 
-    def getResponse(self) -> {"http_code": int, "error": bool, "message": str, "data": {}}:
+    def getResponse(self) -> {"http_code": int, "error": bool, "message": str, "details": {}}:
         return {
             "flask_api": True,
             "http_code": self.http_code,
             "error": self.error,
             "message": self.message,
-            "data": self.details
+            "details": self.details
         }
 
     @staticmethod
@@ -56,7 +56,7 @@ class ApiResponse():
         Switching from the Flask "errors" key to
         response format with "error" & "message".
         
-        Adding an empty "data" object if no details
+        Adding an empty "details" object if no details
         are returned, to remain consistent.
         """
         try:
@@ -76,8 +76,8 @@ class ApiResponse():
             response_data["message"] = ApiResponse.stringifyFlaskErrors(response_data["errors"])
             response_data["error"] = True
             del(response_data["errors"])
-        if "data" not in response_data:
-            response_data["data"] = {}
+        if "details" not in response_data:
+            response_data["details"] = {}
         if "error" not in response_data:
             response_data["error"] = True
         if "http_code" in response_data:
