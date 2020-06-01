@@ -54,6 +54,7 @@ services:
       - "5000:5000"
     volumes:
       - ./api/app:/app
+      - ./migrations:/migrations
       - ./logs:/logs
     environment: 
       FLASK_API_VERSION: "1.0"
