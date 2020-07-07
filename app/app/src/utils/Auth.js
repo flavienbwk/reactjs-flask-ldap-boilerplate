@@ -136,10 +136,7 @@ export class Auth {
     checkUserToken = async () => {
         let user_authenticated = false
         let auth_cookie = this.cookies.get("authentication")
-        if (auth_cookie 
-            && "token" in auth_cookie 
-            && "authenticated" in auth_cookie 
-            && auth_cookie["authenticated"]) {
+        if (auth_cookie && "token" in auth_cookie && "authenticated" in auth_cookie && auth_cookie["authenticated"]) {
             const api_check = await this.#requestLoginCheck(auth_cookie.token)
             if (api_check === undefined || api_check.error) {
                 Notifier.notifyFromResponse(api_check, "Token check", "Token check failure")
