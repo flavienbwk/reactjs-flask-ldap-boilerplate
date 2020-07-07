@@ -21,9 +21,10 @@ logger = Logger()
 
 api = Namespace('Auth', description='Authentication-related operations')
 
-auth_login_ldap_dto = api.parser()
-auth_login_ldap_dto.add_argument('username', type=str, help='LDAP uid', required=True)
-auth_login_ldap_dto.add_argument('password', type=str, help='LDAP password', required=True)
+auth_login_ldap_dto = api.model('auth_login_ldap', {
+    'username': fields.String(required=True, description='LDAP uid'),
+    'password': fields.String(required=True, description='LDAP password')
+})
 
 auth_login_ldap_response_dto = api.model('auth_login_ldap_response', {
     'error': fields.Boolean(description="True on error, false on success"),

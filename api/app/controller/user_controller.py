@@ -27,8 +27,10 @@ user_profile_response_dto = api.model('user_profile_response', {
     )
 })
 
-user_profile_update_dto = api.parser()
-user_profile_update_dto.add_argument('email', type=str, help='New user email', required=True)
+user_profile_update_dto = api.model('user_profile_update', {
+    'email': fields.String(required=True, description='New user email')
+})
+
 user_profile_update_response_dto = api.model('user_profile_update_response', {
     'error': fields.Boolean(description="True on error, false on success"),
     'message': fields.String(description="Some error or success message"),

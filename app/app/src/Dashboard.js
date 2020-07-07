@@ -5,7 +5,7 @@ import { Auth } from './utils/Auth'
 import styled from 'styled-components'
 
 const Styles = styled.div`
-    .paddind-bottom {
+    .padding-bottom {
         padding-bottom: 16px;
     }
 
@@ -31,7 +31,7 @@ export class Dashboard extends Component {
         return (
             <Styles>
                 <Container>
-                    <Row className="paddind-bottom">
+                    <Row className="padding-bottom">
                         <Col lg={{ span: 12 }} className="center">
                             <Jumbotron>
                                 <h1>Hello { this.state.profile.first_name } !</h1>
