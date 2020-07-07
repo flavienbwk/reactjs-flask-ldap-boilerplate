@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const Styles = styled.div`
-    .paddind-bottom {
+    .padding-bottom {
         padding-bottom: 16px;
     }
 
@@ -22,7 +22,7 @@ class Home extends Component {
         return (
             <Styles>
                 <Container>
-                    <Row className="paddind-bottom">
+                    <Row className="padding-bottom">
                         <Col lg={{ span: 12 }} className="center">
                             <Jumbotron>
                                 <h1>Hello</h1>

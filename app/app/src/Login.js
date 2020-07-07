@@ -9,7 +9,7 @@ import { Notifier } from './utils/Notifier'
 import styled from 'styled-components'
 
 const Styles = styled.div`
-    .paddind-top {
+    .padding-top {
         padding-top: 16px;
     }
 
@@ -84,7 +84,7 @@ export class Login extends Component {
         return (
             <Styles>
                 <Container>
-                    <Row className="paddind-top">
+                    <Row className="padding-top">
                         <Col lg={{ offset: 3, span: 6 }}>
                             <Card>
                                 <Card.Body>
