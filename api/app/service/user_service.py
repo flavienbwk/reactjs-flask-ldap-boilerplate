@@ -15,9 +15,10 @@ from utils.ApiResponse import ApiResponse
 from model.User import User
 from model.Token import Token
 
+LDAP_SCHEME = os.environ.get("LDAP_SCHEME")
 LDAP_HOST = os.environ.get("LDAP_HOST")
 LDAP_PORT = os.environ.get("LDAP_PORT")
-LDAP_ENDPOINT = "ldap://{}:{}".format(LDAP_HOST, LDAP_PORT)
+LDAP_ENDPOINT = "{}://{}:{}".format(LDAP_SCHEME, LDAP_HOST, LDAP_PORT)
 LDAP_USERS_DN = os.environ.get("LDAP_USERS_DN")
 LDAP_ADMIN_DN = os.environ.get("LDAP_ADMIN_DN")
 LDAP_ADMIN_PASSWORD = os.environ.get("LDAP_ADMIN_PASSWORD")
@@ -60,6 +61,7 @@ class UserService():
         response = ApiResponse()
         search_filter = "(&(uid={})(objectClass=inetOrgPerson))".format(user.username)
         try:
+            ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
             connection = ldap.initialize(LDAP_ENDPOINT)
             connection.protocol_version = ldap.VERSION3
             connection.simple_bind_s(LDAP_ADMIN_DN, LDAP_ADMIN_PASSWORD)
