@@ -95,7 +95,7 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 API :
 
-- [P3] Add LDAPS (secure LDAP) support
+_Completed_
 
 App :
 
@@ -108,4 +108,3 @@ Architecture :
   - Uses NGINX with SSL
   - Builds & serves the front-end
   - Disables Swagger UI
-- [P4] Improve Docker networks security between containers
