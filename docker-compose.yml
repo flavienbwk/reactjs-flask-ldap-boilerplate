@@ -66,7 +66,8 @@ services:
       LOG_LEVEL: "DEBUG" # DEBUG, INFO, WARNING or ERROR
 
       LDAP_HOST: "ldap"
-      LDAP_PORT: 389 # Secure LDAP (LDAPS) are not supported yet
+      LDAP_SCHEME: "ldap" # "ldaps" if using secure LDAP, "ldap" else
+      LDAP_PORT: 389
       LDAP_USERS_DN: "dc=mycompany,dc=com"
       LDAP_ADMIN_DN: "cn=admin,dc=mycompany,dc=com"
       LDAP_ADMIN_PASSWORD: "adminpwd"
