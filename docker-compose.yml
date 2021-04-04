@@ -55,8 +55,8 @@ services:
     restart: always
     volumes:
       - ./api/app:/app
-      - ./migrations:/migrations
-      - ./logs:/logs
+      - ./logs/api:/logs
+      - api_migrations:/migrations
     ports:
       - 5000:5000
     env_file:
@@ -84,7 +84,7 @@ services:
       - "8080:80"
     volumes:
       - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
-      - ./logs:/var/log/nginx
+      - ./logs/nginx:/var/log/nginx
 
 volumes:
   database:
