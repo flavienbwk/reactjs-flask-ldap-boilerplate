@@ -36,6 +36,12 @@ Here you can take a look at the database architecture scheme :
 
 > Reminder : there is no `password` field because we use LDAP for authentication.
 
+## Why using LDAP authentication ?
+
+LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
+
+With this boilerplate, you will be able to develop corporate-ready services AND avoid yourself the troubles of developing registration / password forgotten / change password / profile update code.
+
 ## Getting started (development)
 
 The API is made to run with an LDAP server for managing users. Whether use the provided Docker LDAP server or remove the conf. in [`docker-compose.yml`](./docker-compose.yml) and use your own LDAP server.
@@ -54,7 +60,7 @@ This section will explain to you how to run this project and set-up the LDAP ser
 
 2. Change the database/LDAP passwords and keys in `.env`
 
-    You can now run :
+    Then run :
 
     ```bash
     docker-compose up ldap phpldapadmin database adminer -d
@@ -93,19 +99,11 @@ docker-compose up --build -d api
 
 :clock9: NPM's initial install may take quite a lot of time
 
-Start the app :
-
 ```bash
 # Expect several minutes for first launch (npm install)
 docker-compose up --build -d app
 ```
 
-You can now enjoy the app on [`http://localhost:8080`](http://localhost:8080)
+Enjoy the app on [`http://localhost:8080`](http://localhost:8080)
 
 > :information_source: If you want to add a NPM package, just stop & re-launch `docker-compose up app`.
-
-## Why using LDAP authentication ?
-
-LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
-
-With this boilerplate, you will be able to develop corporate-ready services AND avoid yourself the troubles of developing registration / password forgotten / change password / profile update code.

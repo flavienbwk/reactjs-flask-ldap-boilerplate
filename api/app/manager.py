@@ -16,7 +16,7 @@ app.register_blueprint(blueprint)
 app.app_context().push()
 
 manager = Manager(app)
-migrate = Migrate(app, database.getDatabase())
+migrate = Migrate(app, database.getDatabase(), "/migrations")
 manager.add_command('db', MigrateCommand)
 
 # Commands
