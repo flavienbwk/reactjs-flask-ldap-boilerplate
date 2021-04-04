@@ -1,8 +1,8 @@
 .vscode/
 
+.env
+
 web/app/node_modules/
-ldap/
 logs/
-migrations/
 
 api/database.mwb.bak

@@ -6,7 +6,7 @@ export class Auth {
 
     constructor(onAuthUpdateCallbacks = [() => {}]) {
         this.cookies = new Cookies()
-        this.api_endpoint = "http://localhost:5000/api"
+        this.api_endpoint = "/api"
         this.onAuthUpdateCallbacks = onAuthUpdateCallbacks // Callbacked if any update has been done to the "authentication" token
     }
 

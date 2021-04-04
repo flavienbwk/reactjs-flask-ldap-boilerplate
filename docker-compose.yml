@@ -1,6 +1,7 @@
-version: "3"
+version: "3.3"
 
 services:
+
 
   # LDAP-related
 
@@ -10,13 +11,11 @@ services:
     ports:
         - 389:389
         - 636:636
-    environment: 
-        LDAP_ORGANISATION: "My Company"
-        LDAP_DOMAIN: "mycompany.com"
-        LDAP_ADMIN_PASSWORD: "adminpwd"
+    env_file:
+      - .env
     volumes:
-        - './ldap/data:/var/lib/ldap'
-        - './ldap/slapd:/etc/ldap/slapd.d'
+        - ldap_data:/var/lib/ldap
+        - ldap_slapd:/etc/ldap/slapd.d
 
   phpldapadmin:
     image: osixia/phpldapadmin:0.9.0
@@ -28,15 +27,16 @@ services:
     depends_on: 
       - ldap
 
+
   # Database-related
 
   database:
     image: postgres:12.2-alpine
     restart: always
-    environment: 
-      POSTGRES_USER: "myproject"
-      POSTGRES_PASSWORD: "myprojectpwd"
-      POSTGRES_DB: "myproject"
+    env_file:
+      - .env
+    volumes:
+      - database:/var/lib/postgresql/data
 
   adminer:
     image: adminer:4.7.6
@@ -46,48 +46,48 @@ services:
     depends_on: 
       - database
 
+
   # Service-related
 
   api:
     build: ./api
+    image: flavienb/reactjs-flask-ldap-boilerplate-api:develop
     restart: always
-    ports:
-      - "5000:5000"
     volumes:
       - ./api/app:/app
       - ./migrations:/migrations
       - ./logs:/logs
-    environment: 
-      FLASK_API_VERSION: "1.0"
-      FLASK_SERVER_NAME: "My API Project"
-      FLASK_SERVER_DESCRIPTION: "Dockerized Flask API boilerplate using an LDAP and token-based authentication"
-      FLASK_SECRET_KEY: "Some secret key"
-      FLASK_LEVEL: "dev" # dev, test or prod
-      LOG_LEVEL: "DEBUG" # DEBUG, INFO, WARNING or ERROR
-
-      LDAP_HOST: "ldap"
-      LDAP_SCHEME: "ldap" # "ldaps" if using secure LDAP, "ldap" else
-      LDAP_PORT: 389
-      LDAP_USERS_DN: "dc=mycompany,dc=com"
-      LDAP_ADMIN_DN: "cn=admin,dc=mycompany,dc=com"
-      LDAP_ADMIN_PASSWORD: "adminpwd"
-
-      POSTGRES_HOST: "database"
-      POSTGRES_PORT: 5432
-      POSTGRES_USER: "myproject"
-      POSTGRES_PASSWORD: "myprojectpwd"
-      POSTGRES_DB: "myproject"
+    ports:
+      - 5000:5000
+    env_file:
+      - .env
     depends_on:
       - ldap
       - database
 
   app:
     build: ./app
+    image: flavienb/reactjs-flask-ldap-boilerplate-app:develop
     restart: always
-    ports:
-      - "8080:3000"
     volumes:
       - ./app/app:/app
     environment:
       NODE_ENV: "development"
       CHOKIDAR_USEPOLLING: "true"
+
+  # We set-up an NGINX to have a unique endpoint for app & api
+  nginx:
+    build: ./nginx
+    image: flavienb/reactjs-flask-ldap-boilerplate-nginx:develop
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
+      - ./logs:/var/log/nginx
+
+volumes:
+  database:
+  ldap_data:
+  ldap_slapd:
+  api_migrations:
