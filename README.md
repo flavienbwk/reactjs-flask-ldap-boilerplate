@@ -22,11 +22,11 @@
 - [Logging and logs rotation](./api/app/utils/Logger.py#L12)
 - [Choose](./app/app/src/App.js#L65) between sidebar and navbar (or use both !)
 - Responsive design
-- Production and development builds
+- [Production](./prod.docker-compose.yml) and [development](./docker-compose.yml) builds
 
 ## API documentation
 
-I chose to use Swagger to document the API. Run the API following the steps below and go to [`http://localhost:5000`](http://localhost:5000).
+We've chosen Swagger to document the API. Run the API following the steps below and go to [`http://localhost:5000`](http://localhost:5000).
 
 Here you can take a look at the database architecture scheme :
 
@@ -44,11 +44,7 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 ## Getting started (development)
 
-The API is made to run with an LDAP server for managing users. Whether use the provided Docker LDAP server or remove the conf. in [`docker-compose.yml`](./docker-compose.yml) and use your own LDAP server.
-
-This section will explain to you how to run this project and set-up the LDAP server with one user.
-
-### 1. Starting authentication services
+This section will explain how to properly run this project and set-up the LDAP server with one user.
 
 1. Copy the `.env.example` to `.env`
 
@@ -58,52 +54,82 @@ This section will explain to you how to run this project and set-up the LDAP ser
 
     > This is a good practice so your `.env` can't be committed along with your modifications (is in `.gitignore`)
 
-2. Change the database/LDAP passwords and keys in `.env`
-
-    Then run :
+2. Start the authentication services
 
     ```bash
     docker-compose up ldap phpldapadmin database adminer -d
     ```
 
-- **adminer** (PostgreSQL management) will be available at `http://localhost:8082`  
-- **phpLDAPAdmin** (LDAP management) will be available at `https://localhost:8081`
+   - **phpLDAPAdmin** (LDAP management) will be available at `https://localhost:8081`
+   - **adminer** (PostgreSQL management) will be available at `http://localhost:8082`
 
-### 2. Creating the first user in the LDAP
+    **Create** your first user by accessing phpLDAPAdmin at `https://localhost:8081` and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).
 
-Access phpLDAPAdmin at `https://localhost:8081` and [follow the LDAP user creation guide](./CREATE_LDAP_USER.md) to add your first user
+3. NGINX reverse-proxy
 
-### 3. NGINX reverse-proxy
+    This boilerplate includes NGINX as a reverse proxy so we can have a unique endpoint for our app and API. Else, we would have to open two endpoints : one for the app, the other for the API.
 
-This boilerplate includes NGINX as a reverse proxy so we can have a unique endpoint for our app and API. Else, we would have to open two endpoints : one for the app, the other for the API.
+    ```bash
+    docker-compose up --build -d nginx
+    ```
 
-```bash
-docker-compose up --build -d nginx
-```
+    > NGINX will auto restart until you have started the app and API below.
 
-NGINX will auto restart until you have started the app and API below.
+4. Run the API
 
-### 4. Run the API
+    The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied when the API is **restarted**.
 
-The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied when the API is **restarted**.
+    You might wait some time before the database get updated after starting the API :
 
-You might wait some time before the database get updated after starting the API :
+    ```bash
+    docker-compose up --build -d api
+    ```
 
-```bash
-docker-compose up --build -d api
-```
+    > For development, go to [`http://localhost:5000`](http://localhost:5000) to access the API documentation
 
-> For development, go to [`http://localhost:5000`](http://localhost:5000) to access the API documentation
+5. Run the web app
 
-### 5. Run the web application
+    ```bash
+    # Expect several minutes for first launch (npm install)
+    docker-compose up --build -d app
+    ```
 
-:clock9: NPM's initial install may take quite a lot of time
+    > :information_source: If you want to add a NPM package, just stop & re-launch `docker-compose up app`.
 
-```bash
-# Expect several minutes for first launch (npm install)
-docker-compose up --build -d app
-```
+    Enjoy the app on [`http://localhost:8080`](http://localhost:8080)
 
-Enjoy the app on [`http://localhost:8080`](http://localhost:8080)
+## Deploy to production
 
-> :information_source: If you want to add a NPM package, just stop & re-launch `docker-compose up app`.
+1. Prepare environment configuration
+
+    Copy `.env.example` to `.env` and **edit** the passwords, keys and credentials
+
+    Use the provided Docker LDAP server or edit the config to use your own.
+
+    ```bash
+    cp .env.example .env
+    ```
+
+2. Build the application for production
+
+    ```bash
+    docker-compose -f prod.docker-compose.yml build
+    ```
+
+3. Start the authentication services
+
+    ```bash
+    docker-compose up ldap phpldapadmin database adminer -d
+    ```
+
+    **Create** your first user by accessing phpLDAPAdmin at `https://localhost:8081` and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).
+
+    :information_source: We recommend you to hide this service behind a firewall
+
+4. Run the application
+
+    ```bash
+    docker-compose -f prod.docker-compose.yml up nginx api app -d
+    ```
+
+    Access the UI at `https://localhost:8080`

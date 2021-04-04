@@ -85,6 +85,9 @@ services:
     volumes:
       - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
       - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - api
+      - app
 
 volumes:
   database:
