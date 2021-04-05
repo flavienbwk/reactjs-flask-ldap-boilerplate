@@ -3,6 +3,7 @@ import logging
 import logging.handlers
 from slugify import slugify
 
+
 PROJECT_NAME = slugify(os.environ.get("FLASK_SERVER_NAME", "project"), separator='_')
 
 class Logger():
@@ -17,16 +18,26 @@ class Logger():
         self.root = root
 
     def debug(self, message):
-        self.root.debug(message)
+        log_message = f"DEBUG: {message}"
+        print(log_message, flush=True)
+        self.root.debug(log_message)
 
     def info(self, message):
-        self.root.info(message)
+        log_message = f"INFO: {message}"
+        print(log_message, flush=True)
+        self.root.info(log_message)
 
     def warning(self, message):
-        self.root.warning(message)
+        log_message = f"WARNING: {message}"
+        print(log_message, flush=True)
+        self.root.warning(log_message)
 
     def error(self, message):
-        self.root.error(message)
+        log_message = f"ERROR: {message}"
+        print(log_message, flush=True)
+        self.root.error(log_message)
 
     def critical(self, message):
-        self.root.critical(message)
+        log_message = f"CRITICAL: {message}"
+        print(log_message, flush=True)
+        self.root.critical(log_message)

@@ -1,10 +1,6 @@
-from flask import request, escape
-from flask_restplus import Resource, Namespace, fields
+from flask_restplus import Resource, Namespace
 
-import sys
-sys.path.append("..")
-
-from utils.ApiResponse import ApiResponse
+from ..utils.ApiResponse import ApiResponse
 
 api = Namespace('Home', description='Basic health operations')
 

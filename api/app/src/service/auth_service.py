@@ -6,18 +6,16 @@ import datetime
 from flask import request, escape
 from functools import wraps
 
-import sys
-sys.path.append("..")
+from ..service.token_service import TokenService
+from ..service.user_service import UserService
 
-from service.token_service import TokenService
-from service.user_service import UserService
+from ..utils.Logger import Logger
+from ..utils.ApiResponse import ApiResponse
+from ..utils.hash import sha256, hash_id
 
-from utils.Logger import Logger
-from utils.ApiResponse import ApiResponse
-from utils.hash import sha256, hash_id
+from ..model.User import User
+from ..model.Token import Token
 
-from model.User import User
-from model.Token import Token
 
 LDAP_SCHEME = os.environ.get("LDAP_SCHEME")
 LDAP_HOST = os.environ.get("LDAP_HOST")

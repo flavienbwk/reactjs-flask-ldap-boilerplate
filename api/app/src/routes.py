@@ -3,16 +3,17 @@ import os
 from flask_restplus import Api
 from flask import Blueprint
 
-from controller.home_controller import api as home_ns
-from controller.auth_controller import api as auth_ns
-from controller.user_controller import api as user_ns
+from .controller.home_controller import api as home_ns
+from .controller.auth_controller import api as auth_ns
+from .controller.user_controller import api as user_ns
+
 
 blueprint = Blueprint('api', __name__)
 api = Api(
     blueprint, 
     title=os.environ.get("FLASK_SERVER_NAME"), 
     description=os.environ.get("FLASK_SERVER_DESCRIPTION"),
-    version='1.0'
+    version=os.environ.get("FLASK_API_VERSION")
 )
 
 # Routes

@@ -1,19 +1,9 @@
-import time
-import datetime
-
 from flask import request, escape
 from flask_restplus import Resource, Namespace, fields
 
-import sys
-sys.path.append("..")
+from ..utils.Logger import Logger
 
-from utils.ApiResponse import ApiResponse
-from utils.Logger import Logger
-
-from model.User import User
-from model.Token import Token
-
-from service.auth_service import AuthService, requires_authentication
+from ..service.auth_service import AuthService, requires_authentication
 
 logger = Logger()
 

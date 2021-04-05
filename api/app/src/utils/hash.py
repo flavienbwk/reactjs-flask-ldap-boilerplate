@@ -2,6 +2,7 @@ import os
 import hashlib
 from hashids import Hashids
 
+
 FLASK_SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
 
 def hash_id(seed: int):

@@ -1,9 +1,10 @@
 #!/bin/sh
 # These commands are here because they must be run at runtime
 
-python /app/manager.py db init
+cd /app
 
-python /app/manager.py db migrate --message 'initial database migration'
-python /app/manager.py db upgrade
+python -m main db init
+python -m main db migrate --message 'Initial database migration'
+python -m main db upgrade
 
-gunicorn manager:app -b 0.0.0.0:5000
+gunicorn main:app -b 0.0.0.0:5000

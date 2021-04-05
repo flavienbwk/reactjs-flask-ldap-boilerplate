@@ -4,16 +4,14 @@ import json
 import datetime
 from validate_email import validate_email
 
-import sys
-sys.path.append("..")
+from ..app import database
 
-from app import database
+from ..utils.Logger import Logger
+from ..utils.ApiResponse import ApiResponse
 
-from utils.Logger import Logger
-from utils.ApiResponse import ApiResponse
+from ..model.User import User
+from ..model.Token import Token
 
-from model.User import User
-from model.Token import Token
 
 LDAP_SCHEME = os.environ.get("LDAP_SCHEME")
 LDAP_HOST = os.environ.get("LDAP_HOST")

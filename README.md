@@ -1,4 +1,4 @@
-# Dockerized ReactJS, Flask, LDAP boilerplate
+# Dockerized ReactJS, Flask & LDAP boilerplate
 
 <p align="center">
     <a href="https://travis-ci.com/flavienbwk/reactjs-flask-ldap-boilerplate" target="_blank">
@@ -8,18 +8,16 @@
 </p>
 <p align="center">ReactJS + Flask + Docker (+ K8S)<br/>boilerplate using a token-based LDAP authentication</p>
 
-> :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
-
 ## Features
 
 - Docker architecture
 - LDAP authentication
 - Token-based API authentication
-- Automatic [token renewal](./api/app/service/auth_service.py#L45) with [a Flask middleware](./api/app/service/auth_service.py#L32)
+- Automatic [token renewal](./api/app/src/service/auth_service.py#L43) with [a Flask middleware](./api/app/src/service/auth_service.py#L30)
 - Swagger documentation
 - Flask-Migrate
 - Flask-SQLAlchemy (PostgreSQL was chosen)
-- [Logging and logs rotation](./api/app/utils/Logger.py#L11)
+- [Logging and logs rotation](./api/app/src/utils/Logger.py#L12)
 - [Choose](./app/app/src/App.js#L65) between sidebar and navbar (or use both !)
 - Responsive design
 - [Production](./prod.docker-compose.yml) and [development](./docker-compose.yml) builds
@@ -77,7 +75,7 @@ This section will explain how to properly run this project and set-up the LDAP s
 
 4. Run the API
 
-    The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied when the API is **restarted**.
+    The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/src/model) will be automatically applied when the API is **restarted**.
 
     You might wait some time before the database get updated after starting the API :
 
@@ -142,7 +140,7 @@ I've used [Scaleway Kapsule](https://www.scaleway.com/en/kubernetes-kapsule) to 
 
 1. Building production images (optional)
 
-    Images are tagged `flavienb/reactjs-flask-ldap-boilerplate-{api,web,nginx}:latest` by default. Edit it in `prod.docker-compose.yml` before building.
+    Images are tagged `flavienb/reactjs-flask-ldap-boilerplate-{api,app,nginx}:latest` by default. Edit it in `prod.docker-compose.yml` before building.
 
     :information_source: You might be interested in pushing your images in a private registry (e.g: [Scaleway's Container Registry service](https://www.scaleway.com/en/container-registry/)).
 
@@ -177,3 +175,5 @@ I've used [Scaleway Kapsule](https://www.scaleway.com/en/kubernetes-kapsule) to 
 4. Configure the first user
 
     **Create** your first user by accessing phpLDAPAdmin at [endpoint defined](./k8s/ingress.yaml#L35) and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).
+
+> :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
