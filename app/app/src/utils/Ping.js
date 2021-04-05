@@ -8,7 +8,7 @@ export class Ping {
      * dedicated to answer to a simple ping.
      */
     static pingApi = () => {
-        return fetch("http://localhost:5000/api")
+        return fetch("/api")
             .then(res => res.json())
             .then((data) => { return data })
             .catch(console.error)

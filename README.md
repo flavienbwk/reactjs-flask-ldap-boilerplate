@@ -1,4 +1,4 @@
-# Dockerized ReactJS, Flask, LDAP-auth boilerplate
+# Dockerized ReactJS, Flask, LDAP boilerplate
 
 <p align="center">
     <a href="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-boilerplate.svg?branch=master" target="_blank">
@@ -6,7 +6,7 @@
     </a>
     <a href="https://codebeat.co/projects/github-com-flavienbwk-reactjs-flask-ldap-boilerplate-master"><img alt="codebeat badge" src="https://codebeat.co/badges/940a0bd0-5aa5-4f96-b6fc-39b6e1b7e14b" /></a>
 </p>
-<p align="center">ReactJS + Flask + Docker<br/>boilerplate using a token-based LDAP authentication</p>
+<p align="center">ReactJS + Flask + Docker (+ K8S)<br/>boilerplate using a token-based LDAP authentication</p>
 
 > :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
 
@@ -15,17 +15,18 @@
 - Docker architecture
 - LDAP authentication
 - Token-based API authentication
-- Automatic [token renewal](./api/app/service/auth_service.py#L44) with [a Flask middleware](./api/app/service/auth_service.py#L31)
+- Automatic [token renewal](./api/app/service/auth_service.py#L45) with [a Flask middleware](./api/app/service/auth_service.py#L32)
 - Swagger documentation
 - Flask-Migrate
 - Flask-SQLAlchemy (PostgreSQL was chosen)
-- [Logging and logs rotation](./api/app/utils/Logger.py#L12)
-- [Choose](./app/app/src/App.js#L64) between sidebar and navbar (or use both !)
+- [Logging and logs rotation](./api/app/utils/Logger.py#L11)
+- [Choose](./app/app/src/App.js#L65) between sidebar and navbar (or use both !)
 - Responsive design
+- [Production](./prod.docker-compose.yml) and [development](./docker-compose.yml) builds
 
 ## API documentation
 
-I chose to use Swagger to document the API. Just run the API following the steps below and browse to [`http://localhost:5000`](http://localhost:5000)
+We've chosen Swagger to document the API. Run the API following the steps below and go to [`http://localhost:5000`](http://localhost:5000).
 
 Here you can take a look at the database architecture scheme :
 
@@ -35,76 +36,144 @@ Here you can take a look at the database architecture scheme :
 
 > Reminder : there is no `password` field because we use LDAP for authentication.
 
-## Setting up the API
-
-The API is made to run with an LDAP server for managing users. Whether use the provided Docker LDAP server or remove the conf. in [`docker-compose.yml`](./docker-compose.yml) and use your own LDAP server.
-
-This section will explain to you how to run this project and set-up the LDAP server with one user.
-
-### Starting services
-
-First, please change the database/LDAP passwords and keys in `docker-compose.yml`
-
-Then, run :
-
-```bash
-docker-compose up ldap phpldapadmin database adminer -d
-```
-
-> **adminer** (PostgreSQL management) will be available through `http://localhost:8082`  
-> **phpLDAPAdmin** (LDAP management) will be available through `https://localhost:8081`
-
-### Creating the first user in the LDAP
-
-Access phpLDAPAdmin with : `https://localhost:8081`
-
-If you are not familiar with LDAP, [read my LDAP user creation guide](./CREATE_LDAP_USER.md) to add your first user
-
-### Run the API
-
-The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied to the database when the API is **restarted**.
-
-```bash
-docker-compose up api
-```
-
-Access the API and its documentation browsing [`http://localhost:5000`](http://localhost:5000)
-
-## Setting up the web application
-
-:clock9: This step may take quite a lot of time due to npm's initial modules download
-
-Just run :
-
-```bash
-# Build is quick, **first** launch is long (expect at least 5 min.)
-docker-compose up app
-```
-
-You can now enjoy the app on [`http://localhost:8080`](http://localhost:8080)
-
-> :information_source: If you want to add a dependency, just stop & re-launch a `docker-compose up app`. You won't have to wait as for first launch.
-
 ## Why using LDAP authentication ?
 
 LDAP services are used in a lot of companies and institutions around the world to manage their user accounts and rights in a central place.
 
 With this boilerplate, you will be able to develop corporate-ready services AND avoid yourself the troubles of developing registration / password forgotten / change password / profile update code.
 
-## Left TODOs
+## Getting started (development)
 
-API :
+This section will explain how to properly run this project and set-up the LDAP server with one user.
 
-_Completed_
+1. Copy the `.env.example` file to `.env`
 
-App :
+    ```bash
+    cp .env.example .env
+    ```
 
-_Completed_
+    > This is a good practice so your `.env` can't be committed along with your modifications (is in `.gitignore`)
 
-Architecture :
+2. Start the authentication services
 
-- [P3] Add "Deploy to prod" guide in README
-- [P3] Create a `prod.docker-compose.yml` file that :
-  - Uses NGINX with SSL
-  - Builds & serves the front-end
-  - Disables Swagger UI
+    ```bash
+    docker-compose up ldap phpldapadmin database adminer -d
+    ```
+
+   - **phpLDAPAdmin** (LDAP management) will be available at `https://localhost:8081`
+   - **adminer** (PostgreSQL management) will be available at `http://localhost:8082`
+
+    **Create** your first user by accessing phpLDAPAdmin at `https://localhost:8081` and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).
+
+3. NGINX reverse-proxy
+
+    This boilerplate includes NGINX as a reverse proxy so we can have a unique endpoint for our app and API. Else, we would have to open two endpoints : one for the app, the other for the API.
+
+    ```bash
+    docker-compose up --build -d nginx
+    ```
+
+    > NGINX will auto restart until you have started the app and API below.
+
+4. Run the API
+
+    The database will be automatically set-up thanks to Flask Migrate and any future modification brought to [models](./api/app/model) will be automatically applied when the API is **restarted**.
+
+    You might wait some time before the database get updated after starting the API :
+
+    ```bash
+    docker-compose up --build -d api
+    ```
+
+    > For development, go to [`http://localhost:5000`](http://localhost:5000) to access the API documentation
+
+5. Run the web app
+
+    ```bash
+    # Expect several minutes for first launch (npm install)
+    docker-compose up --build -d app
+    ```
+
+    > :information_source: If you want to add a NPM package, just stop & re-launch `docker-compose up app`.
+
+    Enjoy the app on [`http://localhost:8080`](http://localhost:8080)
+
+## Deploy to production
+
+1. Prepare environment configuration
+
+    Copy `.env.example` to `.env` and **edit** the passwords, keys and credentials
+
+    Use the provided Docker LDAP server or edit the config to use your own.
+
+    ```bash
+    cp .env.example .env
+    ```
+
+2. Build the application for production
+
+    ```bash
+    docker-compose -f prod.docker-compose.yml build
+    ```
+
+3. Start the authentication services
+
+    ```bash
+    docker-compose up ldap phpldapadmin database adminer -d
+    ```
+
+    **Create** your first user by accessing phpLDAPAdmin at `https://localhost:8081` and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).
+
+    :information_source: We recommend you to hide this service behind a firewall
+
+4. Run the application
+
+    ```bash
+    docker-compose -f prod.docker-compose.yml up nginx api app -d
+    ```
+
+    Access the UI at `https://localhost:8080`
+
+### Deploy to K8S
+
+I pretend you have here your K8S instance configured to be accessed by your `kubectl` CLI.
+
+I've used [Scaleway Kapsule](https://www.scaleway.com/en/kubernetes-kapsule) to perform my tests. This is an easy way to have a Kubernetes cluster quickly ready.
+
+1. Building production images (optional)
+
+    Images are tagged `flavienb/reactjs-flask-ldap-boilerplate-{api,web,nginx}:latest` by default. Edit it in `prod.docker-compose.yml` before building.
+
+    :information_source: You might be interested in pushing your images in a private registry (e.g: [Scaleway's Container Registry service](https://www.scaleway.com/en/container-registry/)).
+
+    ```bash
+    docker-compose -f prod.docker-compose.yml build
+    ```
+
+    Finally, `docker push` the 3 images and edit K8S' configurations :
+
+    - [k8s/app.yaml, line 31](k8s/app.yaml#L31)
+    - [k8s/api.yaml, line 21](k8s/api.yaml#L21)
+    - [k8s/nginx.yaml, line 21](k8s/nginx.yaml#L21)
+
+2. Add a new `reactjs-flask-ldap-boilerplate` namespace
+
+    ```bash
+    kubectl create namespace my-app
+    ```
+
+3. Configure your Ingress app endpoint
+
+    - **Edit** the env variables in [k8s/env-configmap.yaml](./k8s/env-configmap.yaml)
+    - **Edit** the app and phpldapadmin endpoints in [k8s/ingress.yaml, line 10 and 35](./k8s/ingress.yaml#L10)
+    - **Check** the PersistentVolumeClaim if you're not using Scaleway in all `*-pvc.yaml` files
+
+    Deploy with :
+
+    ```bash
+    kubectl apply -f ./k8s
+    ```
+
+4. Configure the first user
+
+    **Create** your first user by accessing phpLDAPAdmin at [endpoint defined](./k8s/ingress.yaml#L35) and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).

@@ -6,4 +6,4 @@ python /app/manager.py db init
 python /app/manager.py db migrate --message 'initial database migration'
 python /app/manager.py db upgrade
 
-python /app/manager.py run
+gunicorn manager:app -b 0.0.0.0:5000
