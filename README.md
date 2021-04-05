@@ -152,7 +152,7 @@ I've used [Scaleway Kapsule](https://www.scaleway.com/en/kubernetes-kapsule) to 
 
     Finally, `docker push` the 3 images and edit K8S' configurations :
 
-    - [k8s/app.yaml, line 26](k8s/app.yaml#L26)
+    - [k8s/app.yaml, line 31](k8s/app.yaml#L31)
     - [k8s/api.yaml, line 21](k8s/api.yaml#L21)
     - [k8s/nginx.yaml, line 21](k8s/nginx.yaml#L21)
 
