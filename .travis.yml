@@ -10,5 +10,6 @@ before_install:
     - sudo mv docker-compose /usr/local/bin
 
 script:
+    - cp .env.example .env
     - docker-compose build
     - docker-compose -f prod.docker-compose.yml build
