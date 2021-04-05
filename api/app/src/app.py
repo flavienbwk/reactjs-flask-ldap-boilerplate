@@ -28,7 +28,7 @@ def create_app():
 
     # Waiting for database to be available
     while database.isDatabaseAvailable(app) is False:
-        logger.info("Waiting for database to be up, sleep 3 seconds...")
+        logger.warning("Database unreachable. Waiting for 3 seconds to be up...")
         sleep(3.0)
     logger.info("Database is up and running ✓")
     database.initDatabase(app)
