@@ -1,8 +1,7 @@
 version: "3.3"
 
 services:
-
-
+  
   # LDAP-related
 
   ldap:

@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: my-app
+  labels:
+    app: ldap
+  name: ldap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ldap
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ldap
+    spec:
+      containers:
+        - image: osixia/openldap:1.3.0
+          name: ldap
+          env:
+            - name: LDAP_ORGANISATION
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_ORGANISATION
+                  name: env
+            - name: LDAP_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_DOMAIN
+                  name: env
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_ADMIN_PASSWORD
+                  name: env
+          ports:
+            - containerPort: 389
+            - containerPort: 636
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /var/lib/ldap
+              name: ldap-data-pvc
+            - mountPath: /etc/ldap/slapd.d
+              name: ldap-slapd-pvc
+          resources: {}
+      volumes:
+        - name: ldap-data-pvc
+          persistentVolumeClaim:
+            claimName: ldap-data-pvc
+        - name: ldap-slapd-pvc
+          persistentVolumeClaim:
+            claimName: ldap-slapd-pvc
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: my-app
+  labels:
+    app: ldap
+  name: ldap
+spec:
+  ports:
+    - name: "ldap-389"
+      port: 389
+      targetPort: 389
+    - name: "ldap-636"
+      port: 636
+      targetPort: 636
+  selector:
+    app: ldap
+status:
+  loadBalancer: {}

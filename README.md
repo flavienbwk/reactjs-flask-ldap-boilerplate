@@ -1,4 +1,4 @@
-# Dockerized ReactJS, Flask, LDAP-auth boilerplate
+# Dockerized ReactJS, Flask, LDAP boilerplate
 
 <p align="center">
     <a href="https://travis-ci.org/flavienbwk/reactjs-flask-ldap-boilerplate.svg?branch=master" target="_blank">
@@ -15,11 +15,11 @@
 - Docker architecture
 - LDAP authentication
 - Token-based API authentication
-- Automatic [token renewal](./api/app/service/auth_service.py#L44) with [a Flask middleware](./api/app/service/auth_service.py#L31)
+- Automatic [token renewal](./api/app/service/auth_service.py#L45) with [a Flask middleware](./api/app/service/auth_service.py#L32)
 - Swagger documentation
 - Flask-Migrate
 - Flask-SQLAlchemy (PostgreSQL was chosen)
-- [Logging and logs rotation](./api/app/utils/Logger.py#L12)
+- [Logging and logs rotation](./api/app/utils/Logger.py#L11)
 - [Choose](./app/app/src/App.js#L65) between sidebar and navbar (or use both !)
 - Responsive design
 - [Production](./prod.docker-compose.yml) and [development](./docker-compose.yml) builds
@@ -46,7 +46,7 @@ With this boilerplate, you will be able to develop corporate-ready services AND 
 
 This section will explain how to properly run this project and set-up the LDAP server with one user.
 
-1. Copy the `.env.example` to `.env`
+1. Copy the `.env.example` file to `.env`
 
     ```bash
     cp .env.example .env
@@ -133,3 +133,47 @@ This section will explain how to properly run this project and set-up the LDAP s
     ```
 
     Access the UI at `https://localhost:8080`
+
+### Deploy to K8S
+
+I pretend you have here your K8S instance configured to be accessed by your `kubectl` CLI.
+
+I've used [Scaleway Kapsule](https://www.scaleway.com/en/kubernetes-kapsule) to perform my tests. This is an easy way to have a Kubernetes cluster quickly ready.
+
+1. Building production images (optional)
+
+    Images are tagged `flavienb/reactjs-flask-ldap-boilerplate-{api,web,nginx}:latest` by default. Edit it in `prod.docker-compose.yml` before building.
+
+    :information_source: You might be interested in pushing your images in a private registry (e.g: [Scaleway's Container Registry service](https://www.scaleway.com/en/container-registry/)).
+
+    ```bash
+    docker-compose -f prod.docker-compose.yml build
+    ```
+
+    Finally, `docker push` the 3 images and edit K8S' configurations :
+
+    - [k8s/app.yaml, line 26](k8s/app.yaml#L26)
+    - [k8s/api.yaml, line 21](k8s/api.yaml#L21)
+    - [k8s/nginx.yaml, line 21](k8s/nginx.yaml#L21)
+
+2. Add a new `reactjs-flask-ldap-boilerplate` namespace
+
+    ```bash
+    kubectl create namespace my-app
+    ```
+
+3. Configure your Ingress app endpoint
+
+    - **Edit** the env variables in [k8s/env-configmap.yaml](./k8s/env-configmap.yaml)
+    - **Edit** the app and phpldapadmin endpoints in [k8s/ingress.yaml, line 10 and 35](./k8s/ingress.yaml#L10)
+    - **Check** the PersistentVolumeClaim if you're not using Scaleway in all `*-pvc.yaml` files
+
+    Deploy with :
+
+    ```bash
+    kubectl apply -f ./k8s
+    ```
+
+4. Configure the first user
+
+    **Create** your first user by accessing phpLDAPAdmin at [endpoint defined](./k8s/ingress.yaml#L35) and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).

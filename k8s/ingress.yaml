@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    name: ingress-nginx
+  namespace: my-app
+  name: ingress-nginx
+spec:
+  rules:
+  - host: app.3c5ee835-9f88-4152-8619-04857b82d43b.nodes.k8s.fr-par.scw.cloud
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    name: ingress-ldap
+  namespace: my-app
+  name: ingress-ldap
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+spec:
+  rules:
+  - host: ldap.3c5ee835-9f88-4152-8619-04857b82d43b.nodes.k8s.fr-par.scw.cloud
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: phpldapadmin
+            port:
+              number: 8080

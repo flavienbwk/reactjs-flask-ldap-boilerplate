@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: my-app
+  labels:
+    app: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - env:
+            - name: NODE_ENV
+              valueFrom:
+                configMapKeyRef:
+                  key: NODE_ENV
+                  name: env
+            - name: CHOKIDAR_USEPOLLING
+              valueFrom:
+                configMapKeyRef:
+                  key: CHOKIDAR_USEPOLLING
+                  name: env
+          image: flavienb/reactjs-flask-ldap-boilerplate-app:latest
+          name: app
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: my-app
+  labels:
+    app: app
+  name: app
+spec:
+  ports:
+    - port: 3000 # Port accessible inside cluster
+      targetPort: 3000 # Port to forward to inside the pod
+      protocol: TCP
+      name: http
+  selector:
+    app: app
+status:
+  loadBalancer: {}

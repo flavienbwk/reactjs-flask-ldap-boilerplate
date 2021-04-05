@@ -68,7 +68,8 @@ class UserService():
             ldap_user = connection.search_s(LDAP_USERS_DN, ldap.SCOPE_SUBTREE, search_filter)
             if len(ldap_user):
                 ldap_user_details = {
-                    "first_name": ldap_user[0][1]["givenName"][0].decode('utf-8'),
+                    "first_name": ldap_user[0][1]["givenName"][0].decode('utf-8')\
+                        if "givenName" in ldap_user[0][1] else "", # givenName is optional in LDAP
                     "last_name": ldap_user[0][1]["sn"][0].decode('utf-8')
                 }
                 user_details = {

@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: my-app
+  labels:
+    app: api
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - image: flavienb/reactjs-flask-ldap-boilerplate-api:latest
+          name: api
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Always
+          env:
+            - name: FLASK_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  key: FLASK_LEVEL
+                  name: env
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  key: LOG_LEVEL
+                  name: env
+            - name: FLASK_SERVER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: FLASK_SERVER_NAME
+                  name: env
+            - name: FLASK_SERVER_DESCRIPTION
+              valueFrom:
+                configMapKeyRef:
+                  key: FLASK_SERVER_DESCRIPTION
+                  name: env
+            - name: FLASK_SECRET_KEY
+              valueFrom:
+                configMapKeyRef:
+                  key: FLASK_SECRET_KEY
+                  name: env
+            - name: LDAP_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_HOST
+                  name: env
+            - name: LDAP_SCHEME
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_SCHEME
+                  name: env
+            - name: LDAP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_PORT
+                  name: env
+            - name: LDAP_USERS_DN
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_USERS_DN
+                  name: env
+            - name: LDAP_ADMIN_DN
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_ADMIN_DN
+                  name: env
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_ADMIN_PASSWORD
+                  name: env
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_HOST
+                  name: env
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PORT
+                  name: env
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_USER
+                  name: env
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: env
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: POSTGRES_DB
+                  name: env
+          volumeMounts:
+            - mountPath: /logs
+              name: api-logs-pvc
+            - mountPath: /migrations
+              subPath: migrations # https://stackoverflow.com/a/51174380/4958081
+              name: api-migrations-pvc
+          resources: {}
+      volumes:
+        - name: api-logs-pvc
+          persistentVolumeClaim:
+            claimName: api-logs-pvc
+        - name: api-migrations-pvc
+          persistentVolumeClaim:
+            claimName: api-migrations-pvc
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api
+  namespace: my-app
+  name: api
+spec:
+  ports:
+    - port: 5000
+      targetPort: 5000
+  selector:
+    app: api
+status:
+  loadBalancer: {}

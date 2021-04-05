@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: my-app
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - image: flavienb/reactjs-flask-ldap-boilerplate-nginx:latest
+          name: nginx
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /var/log/nginx
+              name: nginx-logs-pvc
+          resources: {}
+      volumes:
+        - name: nginx-logs-pvc
+          persistentVolumeClaim:
+            claimName: nginx-logs-pvc
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: my-app
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  ports:
+    - port: 8080
+      targetPort: 80
+  selector:
+    app: nginx
+status:
+  loadBalancer: {}

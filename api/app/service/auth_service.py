@@ -67,10 +67,12 @@ class AuthService():
                 # from users's LDAP details
                 sql_datetime = datetime.datetime.utcnow()
                 last_id = (UserService.getLastUserID() + 1)
+                first_name = user_details[0][1]["givenName"][0].decode('utf-8')\
+                    if "givenName" in user_details[0][1] else "" # givenName is optional in LDAP
                 UserService.createUser({
                     "ids": sha256(hash_id(last_id) + str(time.time())),
                     "username": username,
-                    "first_name": user_details[0][1]["givenName"][0].decode('utf-8'),
+                    "first_name": first_name,
                     "last_name": user_details[0][1]["sn"][0].decode('utf-8'),
                     "created_at": sql_datetime,
                     "updated_at": sql_datetime
