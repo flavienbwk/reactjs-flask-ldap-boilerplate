@@ -12,7 +12,7 @@ export class User {
         const cookies = new Cookies()
         const user_cookie = cookies.get("authentication")
         if (user_cookie && "token" in user_cookie) {
-            return fetch("http://localhost:5000/api/user/profile", {
+            return fetch("/api/user/profile", {
                 method: "POST",
                 headers: { 'X-Api-Auth-Token': user_cookie["token"] }
             })
@@ -31,7 +31,7 @@ export class User {
         const cookies = new Cookies()
         const user_cookie = cookies.get("authentication")
         if (user_cookie && "token" in user_cookie) {
-            return fetch("http://localhost:5000/api/user/profile", {
+            return fetch("/api/user/profile", {
                 method: "PUT",
                 headers: { 
                     'X-Api-Auth-Token': user_cookie["token"],

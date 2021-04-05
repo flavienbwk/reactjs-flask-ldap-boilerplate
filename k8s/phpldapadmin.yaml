@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: my-app
+  labels:
+    app: phpldapadmin
+  name: phpldapadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phpldapadmin
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: phpldapadmin
+    spec:
+      containers:
+        - env:
+            - name: PHPLDAPADMIN_LDAP_HOSTS
+              value: "ldap"
+            - name: PHPLDAPADMIN_HTTPS
+              value: "false"
+          image: osixia/phpldapadmin:0.9.0
+          name: phpldapadmin
+          ports:
+            - containerPort: 80
+          imagePullPolicy: IfNotPresent
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: my-app
+  labels:
+    app: phpldapadmin
+  name: phpldapadmin
+spec:
+  ports:
+    - port: 8080
+      targetPort: 80
+      protocol: TCP
+      name: phpldapadmin
+  selector:
+    app: phpldapadmin
+status:
+  loadBalancer: {}

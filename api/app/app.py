@@ -21,5 +21,6 @@ def create_app():
     app = Flask(__name__)
     app.register_error_handler(404, page_not_found)
     app.config.from_object(config_by_name[FLASK_LEVEL])
+    os.environ["FLASK_ENV"] = config_by_name[FLASK_LEVEL].FLASK_ENV
     database.initDatabase(app)
     return app

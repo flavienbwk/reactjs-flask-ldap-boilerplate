@@ -20,7 +20,8 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    FLASK_ENV = "development"
 
 
 class TestingConfig(Config):
@@ -28,10 +29,12 @@ class TestingConfig(Config):
     TESTING = True
     PRESERVE_CONTEXT_ON_EXCEPTION = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FLASK_ENV = "development"
 
 
 class ProductionConfig(Config):
     DEBUG = False
+    FLASK_ENV = "production"
 
 
 config_by_name = dict(

@@ -1,7 +1,7 @@
 version: "3.3"
 
 services:
-
+  
   # LDAP-related
 
   ldap:
@@ -34,27 +34,18 @@ services:
     volumes:
       - database:/var/lib/postgresql/data
 
-  adminer:
-    image: adminer:4.7.6
-    restart: always
-    ports:
-      - 8082:8080
-    depends_on: 
-      - database
-
 
   # Service-related
 
   api:
-    build: ./api
-    image: flavienb/reactjs-flask-ldap-boilerplate-api:develop
+    build:
+      context: ./api
+      dockerfile: prod.Dockerfile
+    image: flavienb/reactjs-flask-ldap-boilerplate-api:latest
     restart: always
     volumes:
-      - ./api/app:/app
-      - ./logs/api:/logs
+      - api_logs:/logs
       - api_migrations:/migrations
-    ports:
-      - 5000:5000
     env_file:
       - .env
     environment:
@@ -65,30 +56,33 @@ services:
       - database
 
   app:
-    build: ./app
-    image: flavienb/reactjs-flask-ldap-boilerplate-app:develop
+    build:
+      context: ./app
+      dockerfile: prod.Dockerfile
+    image: flavienb/reactjs-flask-ldap-boilerplate-app:latest
     restart: always
-    volumes:
-      - ./app/app:/app
     environment:
-      NODE_ENV: "development"
-      CHOKIDAR_USEPOLLING: "true"
+      NODE_ENV: "production"
+      CHOKIDAR_USEPOLLING: "false"
 
-  # We set-up an NGINX to have a unique endpoint for app & api
+  # We set-up NGINX to have a unique endpoint for app & api
   nginx:
-    build: ./nginx
-    image: flavienb/reactjs-flask-ldap-boilerplate-nginx:develop
+    build:
+      context: ./nginx
+      dockerfile: prod.Dockerfile
+    image: flavienb/reactjs-flask-ldap-boilerplate-nginx:latest
     restart: always
     ports:
       - "8080:80"
     volumes:
-      - ./nginx/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro
-      - ./logs/nginx:/var/log/nginx
+      - nginx_logs:/var/log/nginx
     depends_on:
       - api
       - app
 
 volumes:
+  api_logs:
+  nginx_logs:
   database:
   ldap_data:
   ldap_slapd:
