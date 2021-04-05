@@ -1,10 +1,9 @@
 
+import psycopg2
 from flask_sqlalchemy import SQLAlchemy
 
-import sys
-sys.path.append("..")
+from ..utils.Logger import Logger
 
-from utils.Logger import Logger
 
 logger = Logger()
 
@@ -15,6 +14,20 @@ class Database():
 
     def getDatabase(self):
         return self.database
+
+    def isDatabaseAvailable(self, app):
+        try:
+            conn = psycopg2.connect(
+                "host='{}' dbname='{}' user='{}' password='{}'".format(
+                app.config["POSTGRES_HOST"],
+                app.config["POSTGRES_DB"],
+                app.config["POSTGRES_USER"],
+                app.config["POSTGRES_PASSWORD"]
+            ))
+            conn.close()
+            return True
+        except psycopg2.OperationalError:
+            return False
 
     def initDatabase(self, app):
         self.database.init_app(app)

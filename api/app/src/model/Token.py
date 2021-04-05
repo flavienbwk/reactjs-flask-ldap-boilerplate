@@ -1,13 +1,7 @@
-import datetime
+from ..model.User import User
 
-from sqlalchemy import func
+from ..app import database
 
-import sys
-sys.path.append("..")
-
-from model.User import User
-
-from app import database
 
 db = database.getDatabase()
 

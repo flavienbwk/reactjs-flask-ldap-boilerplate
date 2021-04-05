@@ -1,11 +1,7 @@
-import datetime
-
 from sqlalchemy import func
 
-import sys
-sys.path.append("..")
+from ..app import database
 
-from app import database
 
 db = database.getDatabase()
 

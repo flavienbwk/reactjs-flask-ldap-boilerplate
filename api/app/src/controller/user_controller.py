@@ -1,14 +1,9 @@
 from flask import request, escape
 from flask_restplus import Resource, Namespace, fields
 
-import sys
-sys.path.append("..")
+from ..service.user_service import UserService
+from ..service.auth_service import requires_authentication
 
-from service.token_service import TokenService
-from service.user_service import UserService
-from service.auth_service import requires_authentication
-
-from utils.ApiResponse import ApiResponse
 
 api = Namespace('User', description='User-related operations')
 

@@ -8,6 +8,7 @@ PROJECT_NAME = slugify(os.environ.get("FLASK_SERVER_NAME", "project"), separator
 class Logger():
 
     def __init__(self) -> bool:
+        logging.getLogger().addHandler(logging.StreamHandler())
         handler = logging.handlers.WatchedFileHandler("/logs/api.{}.log".format(PROJECT_NAME))
         formatter = logging.Formatter(logging.BASIC_FORMAT)
         handler.setFormatter(formatter)

@@ -1,9 +1,9 @@
 #!/bin/sh
 # These commands are here because they must be run at runtime
 
-python /app/manager.py db init
+cd /app
 
-python /app/manager.py db migrate --message 'initial database migration'
-python /app/manager.py db upgrade
-
-python /app/manager.py run
+python -m main db init
+python -m main db migrate --message 'Initial database migration'
+python -m main db upgrade
+python -m main run

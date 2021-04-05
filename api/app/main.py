@@ -1,13 +1,9 @@
-import os
-import json
-
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from routes import blueprint
-from app import create_app, database
-
-from utils.ApiResponse import ApiResponse
+from src.routes import blueprint
+from src.app import create_app, database
+from src.utils.ApiResponse import ApiResponse
 
 # Initialization
 
