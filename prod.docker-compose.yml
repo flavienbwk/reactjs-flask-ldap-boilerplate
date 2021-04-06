@@ -41,6 +41,8 @@ services:
     build:
       context: ./api
       dockerfile: prod.Dockerfile
+      args:
+        FLASK_API_VERSION: ${FLASK_API_VERSION}
     image: flavienb/reactjs-flask-ldap-boilerplate-api:latest
     restart: always
     volumes:

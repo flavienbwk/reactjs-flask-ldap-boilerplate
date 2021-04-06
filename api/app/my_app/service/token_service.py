@@ -7,7 +7,6 @@ from flask import request
 from ..app import database
 
 from ..utils.ApiResponse import ApiResponse
-from ..utils.Logger import Logger
 from ..utils.hash import sha256, hash_id
 
 from ..model.User import User
@@ -15,8 +14,6 @@ from ..model.Token import Token
 
 
 TOKEN_EXPIRATION_TIME = 60 * 60 * 6
-
-logger = Logger()
 
 class TokenService():
 

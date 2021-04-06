@@ -20,7 +20,8 @@
 - [Logging and logs rotation](./api/app/src/utils/Logger.py#L12)
 - [Choose](./app/app/src/App.js#L65) between sidebar and navbar (or use both !)
 - Responsive design
-- [Production](./prod.docker-compose.yml) and [development](./docker-compose.yml) builds
+- [Development](./docker-compose.yml), [production](./prod.docker-compose.yml) and [Kubernetes](./k8s) builds
+- State-of-the-art [Python packaging](./api/app/setup.py)
 
 ## API documentation
 

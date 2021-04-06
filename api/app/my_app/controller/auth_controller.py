@@ -1,11 +1,7 @@
 from flask import request, escape
 from flask_restplus import Resource, Namespace, fields
 
-from ..utils.Logger import Logger
-
 from ..service.auth_service import AuthService, requires_authentication
-
-logger = Logger()
 
 # DTOs
 

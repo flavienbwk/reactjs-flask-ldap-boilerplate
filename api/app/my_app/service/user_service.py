@@ -4,9 +4,8 @@ import json
 import datetime
 from validate_email import validate_email
 
-from ..app import database
+from ..app import database, logger
 
-from ..utils.Logger import Logger
 from ..utils.ApiResponse import ApiResponse
 
 from ..model.User import User
@@ -20,8 +19,6 @@ LDAP_ENDPOINT = "{}://{}:{}".format(LDAP_SCHEME, LDAP_HOST, LDAP_PORT)
 LDAP_USERS_DN = os.environ.get("LDAP_USERS_DN")
 LDAP_ADMIN_DN = os.environ.get("LDAP_ADMIN_DN")
 LDAP_ADMIN_PASSWORD = os.environ.get("LDAP_ADMIN_PASSWORD")
-
-logger = Logger()
 
 class UserService():
     
