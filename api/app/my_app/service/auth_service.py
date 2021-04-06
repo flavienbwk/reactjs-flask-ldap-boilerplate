@@ -6,10 +6,11 @@ import datetime
 from flask import request, escape
 from functools import wraps
 
+from ..app import logger
+
 from ..service.token_service import TokenService
 from ..service.user_service import UserService
 
-from ..utils.Logger import Logger
 from ..utils.ApiResponse import ApiResponse
 from ..utils.hash import sha256, hash_id
 
@@ -24,8 +25,6 @@ LDAP_ENDPOINT = "{}://{}:{}".format(LDAP_SCHEME, LDAP_HOST, LDAP_PORT)
 LDAP_USERS_DN = os.environ.get("LDAP_USERS_DN")
 LDAP_ADMIN_DN = os.environ.get("LDAP_ADMIN_DN")
 LDAP_ADMIN_PASSWORD = os.environ.get("LDAP_ADMIN_PASSWORD")
-
-logger = Logger()
 
 def requires_authentication(f):
     """

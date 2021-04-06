@@ -1,9 +1,10 @@
 #!/bin/sh
 # These commands are here because they must be run at runtime
 
-cd /app
+pip install -e /app
 
-python -m main db init
-python -m main db migrate --message 'Initial database migration'
-python -m main db upgrade
-python -m main run
+set -x
+python -m my_app db init
+python -m my_app db migrate --message 'Initial database migration'
+python -m my_app db upgrade
+python -m my_app run

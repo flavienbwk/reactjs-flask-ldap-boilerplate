@@ -2,6 +2,7 @@ from flask_restplus import Resource, Namespace
 
 from ..utils.ApiResponse import ApiResponse
 
+
 api = Namespace('Home', description='Basic health operations')
 
 @api.route(

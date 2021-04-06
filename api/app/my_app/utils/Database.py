@@ -2,15 +2,14 @@
 import psycopg2
 from flask_sqlalchemy import SQLAlchemy
 
-from ..utils.Logger import Logger
+from . import Logger
 
-
-logger = Logger()
 
 class Database():
 
-    def __init__(self) -> None:
+    def __init__(self, logger: Logger) -> None:
         self.database = SQLAlchemy()
+        self.logger = logger
 
     def getDatabase(self):
         return self.database
@@ -44,5 +43,5 @@ class Database():
             self.database.session.commit()
             return True
         except Exception as e:
-            logger.error(e)
+            self.logger.error(e)
             return False
