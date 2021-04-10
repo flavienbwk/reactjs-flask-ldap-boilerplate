@@ -177,4 +177,4 @@ I've used [Scaleway Kapsule](https://www.scaleway.com/en/kubernetes-kapsule) to 
 
     **Create** your first user by accessing phpLDAPAdmin at [endpoint defined](./k8s/ingress.yaml#L35) and [following the LDAP user creation guide](./CREATE_LDAP_USER.md).
 
-> :smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
+:smiley: Suggestions and feedbacks are [highly appreciated](https://github.com/flavienbwk/reactjs-flask-ldap-boilerplate/issues/new)
